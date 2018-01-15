@@ -2,3 +2,7 @@ services:
 #    erika.example:
 #        class: ErikaBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
+
+parameters:
+  api_key: "c3d594f81aba4df6403f9f5441d639e0"
+  url_base: "https://api.themoviedb.org/3/"
