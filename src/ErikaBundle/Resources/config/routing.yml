@@ -1,3 +1,7 @@
 erika_homepage:
-    path:     /hello/{name}
+    path:     /
     defaults: { _controller: ErikaBundle:Default:index }
+
+erika_robot:
+    resource: "@ErikaBundle/Resources/config/routing/robot.yml"
+    prefix:   /robot

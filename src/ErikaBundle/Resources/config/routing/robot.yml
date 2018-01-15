@@ -1,0 +1,7 @@
+robot:
+    path: /
+    defaults: { _controller: "ErikaBundle:Robot:index" }
+
+robot-search-movie:
+    path: search/movie/{movie_name}
+    defaults: { _controller: "ErikaBundle:Robot:searchMovie" }
