@@ -1,0 +1,55 @@
+Episodio:
+    type: entity
+    table: Episodio
+    indexes:
+        PRD_ID:
+            columns:
+                - PRD_ID
+    id:
+        id:
+            type: bigint
+            nullable: false
+            unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        nome:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            column: NOME
+        temporada:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: TEMPORADA
+        resumo:
+            type: text
+            nullable: false
+            length: 65535
+            fixed: false
+            column: RESUMO
+        epiNum:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: EPI_NUM
+        visto:
+            type: boolean
+            nullable: false
+            default: '0'
+            column: VISTO
+    manyToOne:
+        prd:
+            targetEntity: Producao
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PRD_ID:
+                    referencedColumnName: ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

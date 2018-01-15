@@ -1,0 +1,58 @@
+ElencoEpisodioTipo:
+    type: entity
+    table: Elenco_Episodio_Tipo
+    indexes:
+        FK_ElencoID:
+            columns:
+                - ELC_ID
+        FK_EpisodioID:
+            columns:
+                - EPI_ID
+        FK_TipoElencoID:
+            columns:
+                - TIPO_ELC_ID
+    id:
+        id:
+            type: bigint
+            nullable: false
+            unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        nome:
+            type: string
+            nullable: true
+            length: 200
+            fixed: false
+            column: NOME
+    manyToOne:
+        elc:
+            targetEntity: Elenco
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                ELC_ID:
+                    referencedColumnName: ID
+            orphanRemoval: false
+        epi:
+            targetEntity: Episodio
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                EPI_ID:
+                    referencedColumnName: ID
+            orphanRemoval: false
+        tipoElc:
+            targetEntity: TipoElenco
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                TIPO_ELC_ID:
+                    referencedColumnName: ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

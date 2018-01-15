@@ -1,0 +1,4 @@
+erika:
+    resource: "@ErikaBundle/Resources/config/routing.yml"
+    prefix:   /
+

@@ -1,0 +1,58 @@
+Producao:
+    type: entity
+    table: Producao
+    indexes:
+        TIPO_PRD:
+            columns:
+                - TIPO_PRD
+    id:
+        id:
+            type: bigint
+            nullable: false
+            unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        titulo:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            column: TITULO
+        poster:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            column: POSTER
+        resumo:
+            type: text
+            nullable: false
+            length: 65535
+            fixed: false
+            column: RESUMO
+        ano:
+            type: string
+            nullable: false
+            length: 4
+            fixed: false
+            column: ANO
+        classIndicativa:
+            type: string
+            nullable: false
+            length: 50
+            fixed: false
+            column: CLASS_INDICATIVA
+    manyToOne:
+        tipoPrd:
+            targetEntity: TipoProducao
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                TIPO_PRD:
+                    referencedColumnName: ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
