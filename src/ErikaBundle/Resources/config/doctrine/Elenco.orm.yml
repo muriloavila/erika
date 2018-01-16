@@ -45,4 +45,12 @@ ErikaBundle\Entity\Elenco:
             nullable: true
             unsigned: false
             column: ID_TMDB_ELC
+        dtNascimento:
+            type: date
+            nullable: true
+            column: DT_NASCIMENTO
+        dtFalecimento:
+            type: date
+            nullable: true
+            column: DT_FALECIMENTO
     lifecycleCallbacks: {  }

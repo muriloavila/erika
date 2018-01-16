@@ -17,7 +17,7 @@ class ElencoEpisodioTipo
     /**
      * @var string
      */
-    private $nome;
+    private $nomeChar;
 
     /**
      * @var \ErikaBundle\Entity\Elenco
@@ -46,26 +46,26 @@ class ElencoEpisodioTipo
     }
 
     /**
-     * Set nome
+     * Set nomeChar
      *
-     * @param string $nome
+     * @param string $nomeChar
      * @return ElencoEpisodioTipo
      */
-    public function setNome($nome)
+    public function setNomeChar($nomeChar)
     {
-        $this->nome = $nome;
+        $this->nomeChar = $nomeChar;
 
         return $this;
     }
 
     /**
-     * Get nome
+     * Get nomeChar
      *
      * @return string 
      */
-    public function getNome()
+    public function getNomeChar()
     {
-        return $this->nome;
+        return $this->nomeChar;
     }
 
     /**

@@ -20,6 +20,13 @@ ErikaBundle\Entity\ElencoProducaoTipo:
             column: ID
             generator:
                 strategy: IDENTITY
+    fields:
+        nomeChar:
+            type: string
+            nullable: true
+            length: 200
+            fixed: false
+            column: NOME_CHAR
     manyToOne:
         prd:
             targetEntity: Producao

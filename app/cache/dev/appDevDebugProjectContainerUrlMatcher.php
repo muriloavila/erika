@@ -123,8 +123,29 @@ class appDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
         }
 
         // erika_homepage
-        if (0 === strpos($pathinfo, '/hello') && preg_match('#^/hello/(?P<name>[^/]++)$#s', $pathinfo, $matches)) {
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'erika_homepage')), array (  '_controller' => 'ErikaBundle\\Controller\\DefaultController::indexAction',));
+        if ('' === rtrim($pathinfo, '/')) {
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($rawPathinfo.'/', 'erika_homepage');
+            }
+
+            return array (  '_controller' => 'ErikaBundle\\Controller\\DefaultController::indexAction',  '_route' => 'erika_homepage',);
+        }
+
+        if (0 === strpos($pathinfo, '/robot')) {
+            // robot
+            if ('/robot' === rtrim($pathinfo, '/')) {
+                if (substr($pathinfo, -1) !== '/') {
+                    return $this->redirect($rawPathinfo.'/', 'robot');
+                }
+
+                return array (  '_controller' => 'ErikaBundle\\Controller\\RobotController::indexAction',  '_route' => 'robot',);
+            }
+
+            // robot-search-movie
+            if (0 === strpos($pathinfo, '/robot/search/movie') && preg_match('#^/robot/search/movie/(?P<movie_name>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'robot-search-movie')), array (  '_controller' => 'ErikaBundle\\Controller\\RobotController::searchMovieAction',));
+            }
+
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

@@ -7,3 +7,9 @@ services:
    erika.genero:
        class: ErikaBundle\Service\GeneroService
        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+   erika.produtora:
+       class: ErikaBundle\Service\ProdutoraService
+       arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+   erika.elenco:
+       class: ErikaBundle\Service\ElencoService
+       arguments: ["@doctrine.orm.entity_manager", "@service_container"]

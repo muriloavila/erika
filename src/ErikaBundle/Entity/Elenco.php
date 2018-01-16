@@ -44,6 +44,16 @@ class Elenco
      */
     private $idTmdbElc;
 
+    /**
+     * @var \DateTime
+     */
+    private $dtNascimento;
+
+    /**
+     * @var \DateTime
+     */
+    private $dtFalecimento;
+
 
     /**
      * Get id
@@ -191,5 +201,51 @@ class Elenco
     public function getIdTmdbElc()
     {
         return $this->idTmdbElc;
+    }
+
+    /**
+     * Set dtNascimento
+     *
+     * @param \DateTime $dtNascimento
+     * @return Elenco
+     */
+    public function setDtNascimento($dtNascimento)
+    {
+        $this->dtNascimento = $dtNascimento;
+
+        return $this;
+    }
+
+    /**
+     * Get dtNascimento
+     *
+     * @return \DateTime 
+     */
+    public function getDtNascimento()
+    {
+        return $this->dtNascimento;
+    }
+
+    /**
+     * Set dtFalecimento
+     *
+     * @param \DateTime $dtFalecimento
+     * @return Elenco
+     */
+    public function setDtFalecimento($dtFalecimento)
+    {
+        $this->dtFalecimento = $dtFalecimento;
+
+        return $this;
+    }
+
+    /**
+     * Get dtFalecimento
+     *
+     * @return \DateTime 
+     */
+    public function getDtFalecimento()
+    {
+        return $this->dtFalecimento;
     }
 }

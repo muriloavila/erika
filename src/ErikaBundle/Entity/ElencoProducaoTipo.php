@@ -15,6 +15,11 @@ class ElencoProducaoTipo
     private $id;
 
     /**
+     * @var string
+     */
+    private $nomeChar;
+
+    /**
      * @var \ErikaBundle\Entity\Producao
      */
     private $prd;
@@ -38,6 +43,29 @@ class ElencoProducaoTipo
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set nomeChar
+     *
+     * @param string $nomeChar
+     * @return ElencoProducaoTipo
+     */
+    public function setNomeChar($nomeChar)
+    {
+        $this->nomeChar = $nomeChar;
+
+        return $this;
+    }
+
+    /**
+     * Get nomeChar
+     *
+     * @return string 
+     */
+    public function getNomeChar()
+    {
+        return $this->nomeChar;
     }
 
     /**

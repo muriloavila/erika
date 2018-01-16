@@ -31,19 +31,22 @@ public function add(array $parameters = array())
 {
 $this->parameters = array_replace($this->parameters, $parameters);
 }
-public function get($path, $default = null, $deep = false)
+public function get($key, $default = null, $deep = false)
 {
-if (!$deep || false === $pos = strpos($path,'[')) {
-return array_key_exists($path, $this->parameters) ? $this->parameters[$path] : $default;
+if ($deep) {
+@trigger_error('Using paths to find deeper items in '.__METHOD__.' is deprecated since Symfony 2.8 and will be removed in 3.0. Filter the returned value in your own code instead.', E_USER_DEPRECATED);
 }
-$root = substr($path, 0, $pos);
+if (!$deep || false === $pos = strpos($key,'[')) {
+return array_key_exists($key, $this->parameters) ? $this->parameters[$key] : $default;
+}
+$root = substr($key, 0, $pos);
 if (!array_key_exists($root, $this->parameters)) {
 return $default;
 }
 $value = $this->parameters[$root];
 $currentKey = null;
-for ($i = $pos, $c = strlen($path); $i < $c; ++$i) {
-$char = $path[$i];
+for ($i = $pos, $c = strlen($key); $i < $c; ++$i) {
+$char = $key[$i];
 if ('['=== $char) {
 if (null !== $currentKey) {
 throw new \InvalidArgumentException(sprintf('Malformed path. Unexpected "[" at position %d.', $i));
@@ -92,7 +95,7 @@ return preg_replace('/[^[:alnum:]]/','', $this->get($key, $default, $deep));
 }
 public function getDigits($key, $default ='', $deep = false)
 {
-return str_replace(array('-','+'),'', $this->filter($key, $default, $deep, FILTER_SANITIZE_NUMBER_INT));
+return str_replace(array('-','+'),'', $this->filter($key, $default, FILTER_SANITIZE_NUMBER_INT, array(), $deep));
 }
 public function getInt($key, $default = 0, $deep = false)
 {
@@ -100,10 +103,23 @@ return (int) $this->get($key, $default, $deep);
 }
 public function getBoolean($key, $default = false, $deep = false)
 {
-return $this->filter($key, $default, $deep, FILTER_VALIDATE_BOOLEAN);
+return $this->filter($key, $default, FILTER_VALIDATE_BOOLEAN, array(), $deep);
 }
-public function filter($key, $default = null, $deep = false, $filter = FILTER_DEFAULT, $options = array())
+public function filter($key, $default = null, $filter = FILTER_DEFAULT, $options = array(), $deep = false)
 {
+static $filters = null;
+if (null === $filters) {
+foreach (filter_list() as $tmp) {
+$filters[filter_id($tmp)] = 1;
+}
+}
+if (is_bool($filter) || !isset($filters[$filter]) || is_array($deep)) {
+@trigger_error('Passing the $deep boolean as 3rd argument to the '.__METHOD__.' method is deprecated since Symfony 2.8 and will be removed in 3.0. Remove it altogether as the $deep argument will be removed in 3.0.', E_USER_DEPRECATED);
+$tmp = $deep;
+$deep = $filter;
+$filter = $options;
+$options = $tmp;
+}
 $value = $this->get($key, $default, $deep);
 if (!is_array($options) && $options) {
 $options = array('flags'=> $options);
@@ -457,6 +473,13 @@ protected $locale;
 protected $defaultLocale ='en';
 protected static $formats;
 protected static $requestFactory;
+private $isForwardedValid = true;
+private static $forwardedParams = array(
+self::HEADER_CLIENT_IP =>'for',
+self::HEADER_CLIENT_HOST =>'host',
+self::HEADER_CLIENT_PROTO =>'proto',
+self::HEADER_CLIENT_PORT =>'host',
+);
 public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
 {
 $this->initialize($query, $request, $attributes, $cookies, $files, $server, $content);
@@ -720,6 +743,9 @@ return self::$httpMethodParameterOverride;
 }
 public function get($key, $default = null, $deep = false)
 {
+if ($deep) {
+@trigger_error('Using paths to find deeper items in '.__METHOD__.' is deprecated since Symfony 2.8 and will be removed in 3.0. Filter the returned value in your own code instead.', E_USER_DEPRECATED);
+}
 if ($this !== $result = $this->query->get($key, $this, $deep)) {
 return $result;
 }
@@ -749,32 +775,11 @@ $this->session = $session;
 }
 public function getClientIps()
 {
-$clientIps = array();
 $ip = $this->server->get('REMOTE_ADDR');
 if (!$this->isFromTrustedProxy()) {
 return array($ip);
 }
-$hasTrustedForwardedHeader = self::$trustedHeaders[self::HEADER_FORWARDED] && $this->headers->has(self::$trustedHeaders[self::HEADER_FORWARDED]);
-$hasTrustedClientIpHeader = self::$trustedHeaders[self::HEADER_CLIENT_IP] && $this->headers->has(self::$trustedHeaders[self::HEADER_CLIENT_IP]);
-if ($hasTrustedForwardedHeader) {
-$forwardedHeader = $this->headers->get(self::$trustedHeaders[self::HEADER_FORWARDED]);
-preg_match_all('{(for)=("?\[?)([a-z0-9\.:_\-/]*)}', $forwardedHeader, $matches);
-$forwardedClientIps = $matches[3];
-$forwardedClientIps = $this->normalizeAndFilterClientIps($forwardedClientIps, $ip);
-$clientIps = $forwardedClientIps;
-}
-if ($hasTrustedClientIpHeader) {
-$xForwardedForClientIps = array_map('trim', explode(',', $this->headers->get(self::$trustedHeaders[self::HEADER_CLIENT_IP])));
-$xForwardedForClientIps = $this->normalizeAndFilterClientIps($xForwardedForClientIps, $ip);
-$clientIps = $xForwardedForClientIps;
-}
-if ($hasTrustedForwardedHeader && $hasTrustedClientIpHeader && $forwardedClientIps !== $xForwardedForClientIps) {
-throw new ConflictingHeadersException('The request has both a trusted Forwarded header and a trusted Client IP header, conflicting with each other with regards to the originating IP addresses of the request. This is the result of a misconfiguration. You should either configure your proxy only to send one of these headers, or configure Symfony to distrust one of them.');
-}
-if (!$hasTrustedForwardedHeader && !$hasTrustedClientIpHeader) {
-return $this->normalizeAndFilterClientIps(array(), $ip);
-}
-return $clientIps;
+return $this->getTrustedValues(self::HEADER_CLIENT_IP, $ip) ?: array($ip);
 }
 public function getClientIp()
 {
@@ -812,15 +817,13 @@ return $this->isSecure() ?'https':'http';
 }
 public function getPort()
 {
-if ($this->isFromTrustedProxy()) {
-if (self::$trustedHeaders[self::HEADER_CLIENT_PORT] && $port = $this->headers->get(self::$trustedHeaders[self::HEADER_CLIENT_PORT])) {
-return (int) $port;
+if ($this->isFromTrustedProxy() && $host = $this->getTrustedValues(self::HEADER_CLIENT_PORT)) {
+$host = $host[0];
+} elseif ($this->isFromTrustedProxy() && $host = $this->getTrustedValues(self::HEADER_CLIENT_HOST)) {
+$host = $host[0];
+} elseif (!$host = $this->headers->get('HOST')) {
+return $this->server->get('SERVER_PORT');
 }
-if (self::$trustedHeaders[self::HEADER_CLIENT_PROTO] &&'https'=== $this->headers->get(self::$trustedHeaders[self::HEADER_CLIENT_PROTO],'http')) {
-return 443;
-}
-}
-if ($host = $this->headers->get('HOST')) {
 if ('['=== $host[0]) {
 $pos = strpos($host,':', strrpos($host,']'));
 } else {
@@ -830,8 +833,6 @@ if (false !== $pos) {
 return (int) substr($host, $pos + 1);
 }
 return'https'=== $this->getScheme() ? 443 : 80;
-}
-return $this->server->get('SERVER_PORT');
 }
 public function getUser()
 {
@@ -913,17 +914,16 @@ return''=== $qs ? null : $qs;
 }
 public function isSecure()
 {
-if ($this->isFromTrustedProxy() && self::$trustedHeaders[self::HEADER_CLIENT_PROTO] && $proto = $this->headers->get(self::$trustedHeaders[self::HEADER_CLIENT_PROTO])) {
-return in_array(strtolower(current(explode(',', $proto))), array('https','on','ssl','1'));
+if ($this->isFromTrustedProxy() && $proto = $this->getTrustedValues(self::HEADER_CLIENT_PROTO)) {
+return in_array(strtolower($proto[0]), array('https','on','ssl','1'), true);
 }
 $https = $this->server->get('HTTPS');
 return !empty($https) &&'off'!== strtolower($https);
 }
 public function getHost()
 {
-if ($this->isFromTrustedProxy() && self::$trustedHeaders[self::HEADER_CLIENT_HOST] && $host = $this->headers->get(self::$trustedHeaders[self::HEADER_CLIENT_HOST])) {
-$elements = explode(',', $host, 2);
-$host = $elements[0];
+if ($this->isFromTrustedProxy() && $host = $this->getTrustedValues(self::HEADER_CLIENT_HOST)) {
+$host = $host[0];
 } elseif (!$host = $this->headers->get('HOST')) {
 if (!$host = $this->server->get('SERVER_NAME')) {
 $host = $this->server->get('SERVER_ADDR','');
@@ -1314,8 +1314,40 @@ private function isFromTrustedProxy()
 {
 return self::$trustedProxies && IpUtils::checkIp($this->server->get('REMOTE_ADDR'), self::$trustedProxies);
 }
+private function getTrustedValues($type, $ip = null)
+{
+$clientValues = array();
+$forwardedValues = array();
+if (self::$trustedHeaders[$type] && $this->headers->has(self::$trustedHeaders[$type])) {
+foreach (explode(',', $this->headers->get(self::$trustedHeaders[$type])) as $v) {
+$clientValues[] = (self::HEADER_CLIENT_PORT === $type ?'0.0.0.0:':'').trim($v);
+}
+}
+if (self::$trustedHeaders[self::HEADER_FORWARDED] && $this->headers->has(self::$trustedHeaders[self::HEADER_FORWARDED])) {
+$forwardedValues = $this->headers->get(self::$trustedHeaders[self::HEADER_FORWARDED]);
+$forwardedValues = preg_match_all(sprintf('{(?:%s)=(?:"?\[?)([a-zA-Z0-9\.:_\-/]*+)}', self::$forwardedParams[$type]), $forwardedValues, $matches) ? $matches[1] : array();
+}
+if (null !== $ip) {
+$clientValues = $this->normalizeAndFilterClientIps($clientValues, $ip);
+$forwardedValues = $this->normalizeAndFilterClientIps($forwardedValues, $ip);
+}
+if ($forwardedValues === $clientValues || !$clientValues) {
+return $forwardedValues;
+}
+if (!$forwardedValues) {
+return $clientValues;
+}
+if (!$this->isForwardedValid) {
+return null !== $ip ? array('0.0.0.0', $ip) : array();
+}
+$this->isForwardedValid = false;
+throw new ConflictingHeadersException(sprintf('The request has both a trusted "%s" header and a trusted "%s" header, conflicting with each other. You should either configure your proxy to remove one of them, or configure your project to distrust the offending one.', self::$trustedHeaders[self::HEADER_FORWARDED], self::$trustedHeaders[$type]));
+}
 private function normalizeAndFilterClientIps(array $clientIps, $ip)
 {
+if (!$clientIps) {
+return array();
+}
 $clientIps[] = $ip; $firstTrustedIp = null;
 foreach ($clientIps as $key => $clientIp) {
 if (preg_match('{((?:\d+\.){3}\d+)\:\d+}', $clientIp, $match)) {
@@ -1406,7 +1438,6 @@ public static $statusTexts = array(
 303 =>'See Other',
 304 =>'Not Modified',
 305 =>'Use Proxy',
-306 =>'Reserved',
 307 =>'Temporary Redirect',
 308 =>'Permanent Redirect', 400 =>'Bad Request',
 401 =>'Unauthorized',
@@ -1440,7 +1471,7 @@ $this->setContent($content);
 $this->setStatusCode($status);
 $this->setProtocolVersion('1.0');
 if (!$this->headers->has('Date')) {
-$this->setDate(\DateTime::createFromFormat('U', time(), new \DateTimeZone('UTC')));
+$this->setDate(\DateTime::createFromFormat('U', time()));
 }
 }
 public static function create($content ='', $status = 200, $headers = array())
@@ -1504,9 +1535,12 @@ public function sendHeaders()
 if (headers_sent()) {
 return $this;
 }
+if (!$this->headers->has('Date')) {
+$this->setDate(\DateTime::createFromFormat('U', time()));
+}
 foreach ($this->headers->allPreserveCase() as $name => $values) {
 foreach ($values as $value) {
-header($name.': '.$value, false);
+header($name.': '.$value, false, $this->statusCode);
 }
 }
 header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText), true, $this->statusCode);
@@ -1618,7 +1652,10 @@ return $this->headers->hasCacheControlDirective('must-revalidate') || $this->hea
 }
 public function getDate()
 {
-return $this->headers->getDate('Date', new \DateTime());
+if (!$this->headers->has('Date')) {
+$this->setDate(\DateTime::createFromFormat('U', time()));
+}
+return $this->headers->getDate('Date');
 }
 public function setDate(\DateTime $date)
 {

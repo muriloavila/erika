@@ -2,4 +2,4 @@ _assetic:
     resource: .
     type: assetic
 _app:
-    resource: /home/murilo/workspace/still-hamlet-13528/app/config/routing_dev.yml
+    resource: /home/desenvolvimento/workspace/erika/app/config/routing_dev.yml

@@ -21,12 +21,12 @@ ErikaBundle\Entity\ElencoEpisodioTipo:
             generator:
                 strategy: IDENTITY
     fields:
-        nome:
+        nomeChar:
             type: string
             nullable: true
             length: 200
             fixed: false
-            column: NOME
+            column: NOME_CHAR
     manyToOne:
         elc:
             targetEntity: Elenco

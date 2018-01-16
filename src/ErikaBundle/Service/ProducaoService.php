@@ -46,7 +46,22 @@
 				$generosSalvos[] = $generoService->newGenero($genero);
 			}
 
-			return $generosSalvos;
+			$produtoraService = $this->container->get('erika.produtora');
+			$produtorasSalvas = array();
+			foreach ($filme_details->production_companies as $produtora) {
+				$produtorasSalvas[] = $produtoraService->newProdutora($produtora);
+			}
+
+
+			$elencoService = $this->container->get('erika.elenco');
+			$actorsSalvos = array();
+			$crewSalvos = array();
+
+			foreach ($filme_credits->cast as $actor) {
+				$actorsSalvos[] = $elencoService->newElencoActor($actor);
+			}
+
+			return $actorsSalvos;
 		}
 	}
 
