@@ -6,40 +6,78 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * GeneroProducao
- *
- * @ORM\Table(name="Genero_Producao", indexes={@ORM\Index(name="PRD_ID", columns={"PRD_ID"}), @ORM\Index(name="GEN_ID", columns={"GEN_ID"})})
- * @ORM\Entity
  */
 class GeneroProducao
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ID", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var \Producao
-     *
-     * @ORM\ManyToOne(targetEntity="Producao")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PRD_ID", referencedColumnName="ID")
-     * })
+     * @var \ErikaBundle\Entity\Producao
      */
     private $prd;
 
     /**
-     * @var \Genero
-     *
-     * @ORM\ManyToOne(targetEntity="Genero")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="GEN_ID", referencedColumnName="ID")
-     * })
+     * @var \ErikaBundle\Entity\Genero
      */
     private $gen;
 
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set prd
+     *
+     * @param \ErikaBundle\Entity\Producao $prd
+     * @return GeneroProducao
+     */
+    public function setPrd(\ErikaBundle\Entity\Producao $prd = null)
+    {
+        $this->prd = $prd;
+
+        return $this;
+    }
+
+    /**
+     * Get prd
+     *
+     * @return \ErikaBundle\Entity\Producao 
+     */
+    public function getPrd()
+    {
+        return $this->prd;
+    }
+
+    /**
+     * Set gen
+     *
+     * @param \ErikaBundle\Entity\Genero $gen
+     * @return GeneroProducao
+     */
+    public function setGen(\ErikaBundle\Entity\Genero $gen = null)
+    {
+        $this->gen = $gen;
+
+        return $this;
+    }
+
+    /**
+     * Get gen
+     *
+     * @return \ErikaBundle\Entity\Genero 
+     */
+    public function getGen()
+    {
+        return $this->gen;
+    }
 }

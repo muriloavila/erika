@@ -24,10 +24,20 @@
                 "language"  => "pt-BR",
                 "query"     => $movie_name
             );
-            $request = new HttpGetJson("https://api.themoviedb.org/3/search/movie", $parameters);
-            $output = $this->get('api_caller')->call($request);
 
-            return $this->render('ErikaBundle:Default:index.html.twig', array('name' => $request->getResponseData()));
+            $mcurl = $this->get('erika.mcurl');
+            $mcurl->setBase_uri("https://api.themoviedb.org/3/");
+
+            $retorno = $mcurl->getJsonToObject('search/movie', $parameters);
+
+            $teste = $retorno->results[0];
+
+            $service = $this->get('erika.producao');
+            $oi = $service->setNewMovie($teste);
+
+            dump($oi);
+            return $this->render('ErikaBundle:Default:index.html.twig', array('name' => "OI"));
+            // return $this->render('ErikaBundle:Default:search.html.twig', array('movies' => $resposta['results'], 'busca' => $movie_name));
 		}
 	}
 

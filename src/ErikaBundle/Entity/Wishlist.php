@@ -6,37 +6,78 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Wishlist
- *
- * @ORM\Table(name="Wishlist", indexes={@ORM\Index(name="PRD_ID", columns={"PRD_ID"})})
- * @ORM\Entity
  */
 class Wishlist
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ID", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="PRIORIDADE", type="integer", nullable=false)
      */
     private $prioridade;
 
     /**
-     * @var \Producao
-     *
-     * @ORM\ManyToOne(targetEntity="Producao")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PRD_ID", referencedColumnName="ID")
-     * })
+     * @var \ErikaBundle\Entity\Producao
      */
     private $prd;
 
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set prioridade
+     *
+     * @param integer $prioridade
+     * @return Wishlist
+     */
+    public function setPrioridade($prioridade)
+    {
+        $this->prioridade = $prioridade;
+
+        return $this;
+    }
+
+    /**
+     * Get prioridade
+     *
+     * @return integer 
+     */
+    public function getPrioridade()
+    {
+        return $this->prioridade;
+    }
+
+    /**
+     * Set prd
+     *
+     * @param \ErikaBundle\Entity\Producao $prd
+     * @return Wishlist
+     */
+    public function setPrd(\ErikaBundle\Entity\Producao $prd = null)
+    {
+        $this->prd = $prd;
+
+        return $this;
+    }
+
+    /**
+     * Get prd
+     *
+     * @return \ErikaBundle\Entity\Producao 
+     */
+    public function getPrd()
+    {
+        return $this->prd;
+    }
 }

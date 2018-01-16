@@ -6,65 +6,246 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Producao
- *
- * @ORM\Table(name="Producao", indexes={@ORM\Index(name="TIPO_PRD", columns={"TIPO_PRD"})})
- * @ORM\Entity
  */
 class Producao
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ID", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="TITULO", type="string", length=200, nullable=false)
      */
     private $titulo;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="POSTER", type="string", length=200, nullable=false)
      */
     private $poster;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="RESUMO", type="text", length=65535, nullable=false)
      */
     private $resumo;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="ANO", type="string", length=4, nullable=false)
      */
     private $ano;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="CLASS_INDICATIVA", type="string", length=50, nullable=false)
      */
     private $classIndicativa;
 
     /**
-     * @var \TipoProducao
-     *
-     * @ORM\ManyToOne(targetEntity="TipoProducao")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="TIPO_PRD", referencedColumnName="ID")
-     * })
+     * @var string
+     */
+    private $orgTitulo;
+
+    /**
+     * @var integer
+     */
+    private $idTmdb;
+
+    /**
+     * @var \ErikaBundle\Entity\TipoProducao
      */
     private $tipoPrd;
 
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set titulo
+     *
+     * @param string $titulo
+     * @return Producao
+     */
+    public function setTitulo($titulo)
+    {
+        $this->titulo = $titulo;
+
+        return $this;
+    }
+
+    /**
+     * Get titulo
+     *
+     * @return string 
+     */
+    public function getTitulo()
+    {
+        return $this->titulo;
+    }
+
+    /**
+     * Set poster
+     *
+     * @param string $poster
+     * @return Producao
+     */
+    public function setPoster($poster)
+    {
+        $this->poster = $poster;
+
+        return $this;
+    }
+
+    /**
+     * Get poster
+     *
+     * @return string 
+     */
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    /**
+     * Set resumo
+     *
+     * @param string $resumo
+     * @return Producao
+     */
+    public function setResumo($resumo)
+    {
+        $this->resumo = $resumo;
+
+        return $this;
+    }
+
+    /**
+     * Get resumo
+     *
+     * @return string 
+     */
+    public function getResumo()
+    {
+        return $this->resumo;
+    }
+
+    /**
+     * Set ano
+     *
+     * @param string $ano
+     * @return Producao
+     */
+    public function setAno($ano)
+    {
+        $this->ano = $ano;
+
+        return $this;
+    }
+
+    /**
+     * Get ano
+     *
+     * @return string 
+     */
+    public function getAno()
+    {
+        return $this->ano;
+    }
+
+    /**
+     * Set classIndicativa
+     *
+     * @param string $classIndicativa
+     * @return Producao
+     */
+    public function setClassIndicativa($classIndicativa)
+    {
+        $this->classIndicativa = $classIndicativa;
+
+        return $this;
+    }
+
+    /**
+     * Get classIndicativa
+     *
+     * @return string 
+     */
+    public function getClassIndicativa()
+    {
+        return $this->classIndicativa;
+    }
+
+    /**
+     * Set orgTitulo
+     *
+     * @param string $orgTitulo
+     * @return Producao
+     */
+    public function setOrgTitulo($orgTitulo)
+    {
+        $this->orgTitulo = $orgTitulo;
+
+        return $this;
+    }
+
+    /**
+     * Get orgTitulo
+     *
+     * @return string 
+     */
+    public function getOrgTitulo()
+    {
+        return $this->orgTitulo;
+    }
+
+    /**
+     * Set idTmdb
+     *
+     * @param integer $idTmdb
+     * @return Producao
+     */
+    public function setIdTmdb($idTmdb)
+    {
+        $this->idTmdb = $idTmdb;
+
+        return $this;
+    }
+
+    /**
+     * Get idTmdb
+     *
+     * @return integer 
+     */
+    public function getIdTmdb()
+    {
+        return $this->idTmdb;
+    }
+
+    /**
+     * Set tipoPrd
+     *
+     * @param \ErikaBundle\Entity\TipoProducao $tipoPrd
+     * @return Producao
+     */
+    public function setTipoPrd(\ErikaBundle\Entity\TipoProducao $tipoPrd = null)
+    {
+        $this->tipoPrd = $tipoPrd;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoPrd
+     *
+     * @return \ErikaBundle\Entity\TipoProducao 
+     */
+    public function getTipoPrd()
+    {
+        return $this->tipoPrd;
+    }
 }

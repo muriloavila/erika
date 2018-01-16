@@ -6,55 +6,190 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Elenco
- *
- * @ORM\Table(name="Elenco")
- * @ORM\Entity
  */
 class Elenco
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ID", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="NOME", type="string", length=200, nullable=false)
      */
     private $nome;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="ABREV", type="string", length=200, nullable=false)
      */
     private $abrev;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="IDADE", type="integer", nullable=false)
      */
     private $idade;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="FOTO", type="string", length=200, nullable=false)
      */
     private $foto;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="TWITTER_LINK", type="string", length=200, nullable=false)
      */
     private $twitterLink;
 
+    /**
+     * @var integer
+     */
+    private $idTmdbElc;
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nome
+     *
+     * @param string $nome
+     * @return Elenco
+     */
+    public function setNome($nome)
+    {
+        $this->nome = $nome;
+
+        return $this;
+    }
+
+    /**
+     * Get nome
+     *
+     * @return string 
+     */
+    public function getNome()
+    {
+        return $this->nome;
+    }
+
+    /**
+     * Set abrev
+     *
+     * @param string $abrev
+     * @return Elenco
+     */
+    public function setAbrev($abrev)
+    {
+        $this->abrev = $abrev;
+
+        return $this;
+    }
+
+    /**
+     * Get abrev
+     *
+     * @return string 
+     */
+    public function getAbrev()
+    {
+        return $this->abrev;
+    }
+
+    /**
+     * Set idade
+     *
+     * @param integer $idade
+     * @return Elenco
+     */
+    public function setIdade($idade)
+    {
+        $this->idade = $idade;
+
+        return $this;
+    }
+
+    /**
+     * Get idade
+     *
+     * @return integer 
+     */
+    public function getIdade()
+    {
+        return $this->idade;
+    }
+
+    /**
+     * Set foto
+     *
+     * @param string $foto
+     * @return Elenco
+     */
+    public function setFoto($foto)
+    {
+        $this->foto = $foto;
+
+        return $this;
+    }
+
+    /**
+     * Get foto
+     *
+     * @return string 
+     */
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+
+    /**
+     * Set twitterLink
+     *
+     * @param string $twitterLink
+     * @return Elenco
+     */
+    public function setTwitterLink($twitterLink)
+    {
+        $this->twitterLink = $twitterLink;
+
+        return $this;
+    }
+
+    /**
+     * Get twitterLink
+     *
+     * @return string 
+     */
+    public function getTwitterLink()
+    {
+        return $this->twitterLink;
+    }
+
+    /**
+     * Set idTmdbElc
+     *
+     * @param integer $idTmdbElc
+     * @return Elenco
+     */
+    public function setIdTmdbElc($idTmdbElc)
+    {
+        $this->idTmdbElc = $idTmdbElc;
+
+        return $this;
+    }
+
+    /**
+     * Get idTmdbElc
+     *
+     * @return integer 
+     */
+    public function getIdTmdbElc()
+    {
+        return $this->idTmdbElc;
+    }
 }

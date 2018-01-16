@@ -1,0 +1,20 @@
+ErikaBundle\Entity\TipoProducao:
+    type: entity
+    table: Tipo_Producao
+    id:
+        id:
+            type: bigint
+            nullable: false
+            unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        nome:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            column: NOME
+    lifecycleCallbacks: {  }

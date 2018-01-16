@@ -6,65 +6,190 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Episodio
- *
- * @ORM\Table(name="Episodio", indexes={@ORM\Index(name="PRD_ID", columns={"PRD_ID"})})
- * @ORM\Entity
  */
 class Episodio
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ID", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="NOME", type="string", length=200, nullable=false)
      */
     private $nome;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="TEMPORADA", type="integer", nullable=false)
      */
     private $temporada;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="RESUMO", type="text", length=65535, nullable=false)
      */
     private $resumo;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="EPI_NUM", type="integer", nullable=false)
      */
     private $epiNum;
 
     /**
      * @var boolean
-     *
-     * @ORM\Column(name="VISTO", type="boolean", nullable=false)
      */
     private $visto;
 
     /**
-     * @var \Producao
-     *
-     * @ORM\ManyToOne(targetEntity="Producao")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PRD_ID", referencedColumnName="ID")
-     * })
+     * @var \ErikaBundle\Entity\Producao
      */
     private $prd;
 
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nome
+     *
+     * @param string $nome
+     * @return Episodio
+     */
+    public function setNome($nome)
+    {
+        $this->nome = $nome;
+
+        return $this;
+    }
+
+    /**
+     * Get nome
+     *
+     * @return string 
+     */
+    public function getNome()
+    {
+        return $this->nome;
+    }
+
+    /**
+     * Set temporada
+     *
+     * @param integer $temporada
+     * @return Episodio
+     */
+    public function setTemporada($temporada)
+    {
+        $this->temporada = $temporada;
+
+        return $this;
+    }
+
+    /**
+     * Get temporada
+     *
+     * @return integer 
+     */
+    public function getTemporada()
+    {
+        return $this->temporada;
+    }
+
+    /**
+     * Set resumo
+     *
+     * @param string $resumo
+     * @return Episodio
+     */
+    public function setResumo($resumo)
+    {
+        $this->resumo = $resumo;
+
+        return $this;
+    }
+
+    /**
+     * Get resumo
+     *
+     * @return string 
+     */
+    public function getResumo()
+    {
+        return $this->resumo;
+    }
+
+    /**
+     * Set epiNum
+     *
+     * @param integer $epiNum
+     * @return Episodio
+     */
+    public function setEpiNum($epiNum)
+    {
+        $this->epiNum = $epiNum;
+
+        return $this;
+    }
+
+    /**
+     * Get epiNum
+     *
+     * @return integer 
+     */
+    public function getEpiNum()
+    {
+        return $this->epiNum;
+    }
+
+    /**
+     * Set visto
+     *
+     * @param boolean $visto
+     * @return Episodio
+     */
+    public function setVisto($visto)
+    {
+        $this->visto = $visto;
+
+        return $this;
+    }
+
+    /**
+     * Get visto
+     *
+     * @return boolean 
+     */
+    public function getVisto()
+    {
+        return $this->visto;
+    }
+
+    /**
+     * Set prd
+     *
+     * @param \ErikaBundle\Entity\Producao $prd
+     * @return Episodio
+     */
+    public function setPrd(\ErikaBundle\Entity\Producao $prd = null)
+    {
+        $this->prd = $prd;
+
+        return $this;
+    }
+
+    /**
+     * Get prd
+     *
+     * @return \ErikaBundle\Entity\Producao 
+     */
+    public function getPrd()
+    {
+        return $this->prd;
+    }
 }

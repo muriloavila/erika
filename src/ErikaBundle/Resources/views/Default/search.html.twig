@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Filmes Achados Pesquisando por {{busca}} {% endblock %}
+
+{% block body %}
+	<h2>Filmes Achados Pesquisando por {{busca}}</h2>
+    {% for movie in movies %}
+        <p><label>{{ movie.title }}</label><input type="checkbox" name="movieSelect[]" id={{movie['id']}}> </p>
+    {% endfor %}
+{% endblock %}

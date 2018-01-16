@@ -1,0 +1,48 @@
+ErikaBundle\Entity\Elenco:
+    type: entity
+    table: Elenco
+    id:
+        id:
+            type: bigint
+            nullable: false
+            unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        nome:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            column: NOME
+        abrev:
+            type: string
+            nullable: true
+            length: 200
+            fixed: false
+            column: ABREV
+        idade:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: IDADE
+        foto:
+            type: string
+            nullable: true
+            length: 200
+            fixed: false
+            column: FOTO
+        twitterLink:
+            type: string
+            nullable: true
+            length: 200
+            fixed: false
+            column: TWITTER_LINK
+        idTmdbElc:
+            type: bigint
+            nullable: true
+            unsigned: false
+            column: ID_TMDB_ELC
+    lifecycleCallbacks: {  }

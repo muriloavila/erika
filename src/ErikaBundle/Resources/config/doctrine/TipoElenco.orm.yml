@@ -1,0 +1,20 @@
+ErikaBundle\Entity\TipoElenco:
+    type: entity
+    table: Tipo_Elenco
+    id:
+        id:
+            type: bigint
+            nullable: false
+            unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        descricao:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            column: DESCRICAO
+    lifecycleCallbacks: {  }

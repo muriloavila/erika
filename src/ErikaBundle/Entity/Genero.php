@@ -6,27 +6,78 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Genero
- *
- * @ORM\Table(name="Genero")
- * @ORM\Entity
  */
 class Genero
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ID", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="NOME", type="string", length=200, nullable=false)
      */
     private $nome;
 
+    /**
+     * @var integer
+     */
+    private $idTmdbGnr;
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nome
+     *
+     * @param string $nome
+     * @return Genero
+     */
+    public function setNome($nome)
+    {
+        $this->nome = $nome;
+
+        return $this;
+    }
+
+    /**
+     * Get nome
+     *
+     * @return string 
+     */
+    public function getNome()
+    {
+        return $this->nome;
+    }
+
+    /**
+     * Set idTmdbGnr
+     *
+     * @param integer $idTmdbGnr
+     * @return Genero
+     */
+    public function setIdTmdbGnr($idTmdbGnr)
+    {
+        $this->idTmdbGnr = $idTmdbGnr;
+
+        return $this;
+    }
+
+    /**
+     * Get idTmdbGnr
+     *
+     * @return integer 
+     */
+    public function getIdTmdbGnr()
+    {
+        return $this->idTmdbGnr;
+    }
 }

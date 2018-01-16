@@ -6,50 +6,106 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ElencoProducaoTipo
- *
- * @ORM\Table(name="Elenco_Producao_Tipo", indexes={@ORM\Index(name="PRD_ID", columns={"PRD_ID"}), @ORM\Index(name="TIPO_ELC_ID", columns={"TIPO_ELC_ID"}), @ORM\Index(name="ELC_ID", columns={"ELC_ID"})})
- * @ORM\Entity
  */
 class ElencoProducaoTipo
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ID", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var \Producao
-     *
-     * @ORM\ManyToOne(targetEntity="Producao")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PRD_ID", referencedColumnName="ID")
-     * })
+     * @var \ErikaBundle\Entity\Producao
      */
     private $prd;
 
     /**
-     * @var \TipoElenco
-     *
-     * @ORM\ManyToOne(targetEntity="TipoElenco")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="TIPO_ELC_ID", referencedColumnName="ID")
-     * })
+     * @var \ErikaBundle\Entity\TipoElenco
      */
     private $tipoElc;
 
     /**
-     * @var \Elenco
-     *
-     * @ORM\ManyToOne(targetEntity="Elenco")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ELC_ID", referencedColumnName="ID")
-     * })
+     * @var \ErikaBundle\Entity\Elenco
      */
     private $elc;
 
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set prd
+     *
+     * @param \ErikaBundle\Entity\Producao $prd
+     * @return ElencoProducaoTipo
+     */
+    public function setPrd(\ErikaBundle\Entity\Producao $prd = null)
+    {
+        $this->prd = $prd;
+
+        return $this;
+    }
+
+    /**
+     * Get prd
+     *
+     * @return \ErikaBundle\Entity\Producao 
+     */
+    public function getPrd()
+    {
+        return $this->prd;
+    }
+
+    /**
+     * Set tipoElc
+     *
+     * @param \ErikaBundle\Entity\TipoElenco $tipoElc
+     * @return ElencoProducaoTipo
+     */
+    public function setTipoElc(\ErikaBundle\Entity\TipoElenco $tipoElc = null)
+    {
+        $this->tipoElc = $tipoElc;
+
+        return $this;
+    }
+
+    /**
+     * Get tipoElc
+     *
+     * @return \ErikaBundle\Entity\TipoElenco 
+     */
+    public function getTipoElc()
+    {
+        return $this->tipoElc;
+    }
+
+    /**
+     * Set elc
+     *
+     * @param \ErikaBundle\Entity\Elenco $elc
+     * @return ElencoProducaoTipo
+     */
+    public function setElc(\ErikaBundle\Entity\Elenco $elc = null)
+    {
+        $this->elc = $elc;
+
+        return $this;
+    }
+
+    /**
+     * Get elc
+     *
+     * @return \ErikaBundle\Entity\Elenco 
+     */
+    public function getElc()
+    {
+        return $this->elc;
+    }
 }

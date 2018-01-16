@@ -6,37 +6,78 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Watched
- *
- * @ORM\Table(name="Watched", indexes={@ORM\Index(name="PRD_ID", columns={"PRD_ID"})})
- * @ORM\Entity
  */
 class Watched
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ID", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="NOTA", type="integer", nullable=false)
      */
     private $nota;
 
     /**
-     * @var \Producao
-     *
-     * @ORM\ManyToOne(targetEntity="Producao")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PRD_ID", referencedColumnName="ID")
-     * })
+     * @var \ErikaBundle\Entity\Producao
      */
     private $prd;
 
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nota
+     *
+     * @param integer $nota
+     * @return Watched
+     */
+    public function setNota($nota)
+    {
+        $this->nota = $nota;
+
+        return $this;
+    }
+
+    /**
+     * Get nota
+     *
+     * @return integer 
+     */
+    public function getNota()
+    {
+        return $this->nota;
+    }
+
+    /**
+     * Set prd
+     *
+     * @param \ErikaBundle\Entity\Producao $prd
+     * @return Watched
+     */
+    public function setPrd(\ErikaBundle\Entity\Producao $prd = null)
+    {
+        $this->prd = $prd;
+
+        return $this;
+    }
+
+    /**
+     * Get prd
+     *
+     * @return \ErikaBundle\Entity\Producao 
+     */
+    public function getPrd()
+    {
+        return $this->prd;
+    }
 }

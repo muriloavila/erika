@@ -1,0 +1,32 @@
+ErikaBundle\Entity\Streaming:
+    type: entity
+    table: Streaming
+    id:
+        id:
+            type: bigint
+            nullable: false
+            unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        nome:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            column: NOME
+        site:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            column: SITE
+        logo:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            column: LOGO
+    lifecycleCallbacks: {  }

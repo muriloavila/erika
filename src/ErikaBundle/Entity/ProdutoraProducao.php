@@ -6,40 +6,78 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ProdutoraProducao
- *
- * @ORM\Table(name="Produtora_Producao", indexes={@ORM\Index(name="PRD_ID", columns={"PRD_ID"}), @ORM\Index(name="PDT_ID", columns={"PDT_ID"})})
- * @ORM\Entity
  */
 class ProdutoraProducao
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="ID", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var \Producao
-     *
-     * @ORM\ManyToOne(targetEntity="Producao")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PRD_ID", referencedColumnName="ID")
-     * })
+     * @var \ErikaBundle\Entity\Producao
      */
     private $prd;
 
     /**
-     * @var \Produtora
-     *
-     * @ORM\ManyToOne(targetEntity="Produtora")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="PDT_ID", referencedColumnName="ID")
-     * })
+     * @var \ErikaBundle\Entity\Produtora
      */
     private $pdt;
 
 
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set prd
+     *
+     * @param \ErikaBundle\Entity\Producao $prd
+     * @return ProdutoraProducao
+     */
+    public function setPrd(\ErikaBundle\Entity\Producao $prd = null)
+    {
+        $this->prd = $prd;
+
+        return $this;
+    }
+
+    /**
+     * Get prd
+     *
+     * @return \ErikaBundle\Entity\Producao 
+     */
+    public function getPrd()
+    {
+        return $this->prd;
+    }
+
+    /**
+     * Set pdt
+     *
+     * @param \ErikaBundle\Entity\Produtora $pdt
+     * @return ProdutoraProducao
+     */
+    public function setPdt(\ErikaBundle\Entity\Produtora $pdt = null)
+    {
+        $this->pdt = $pdt;
+
+        return $this;
+    }
+
+    /**
+     * Get pdt
+     *
+     * @return \ErikaBundle\Entity\Produtora 
+     */
+    public function getPdt()
+    {
+        return $this->pdt;
+    }
 }

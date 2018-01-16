@@ -1,0 +1,25 @@
+ErikaBundle\Entity\Produtora:
+    type: entity
+    table: Produtora
+    id:
+        id:
+            type: bigint
+            nullable: false
+            unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        nome:
+            type: string
+            nullable: true
+            length: 200
+            fixed: false
+            column: NOME
+        idTmdbPdt:
+            type: bigint
+            nullable: true
+            unsigned: false
+            column: ID_TMDB_PDT
+    lifecycleCallbacks: {  }

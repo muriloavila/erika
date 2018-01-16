@@ -1,0 +1,33 @@
+ErikaBundle\Entity\Watched:
+    type: entity
+    table: Watched
+    indexes:
+        PRD_ID:
+            columns:
+                - PRD_ID
+    id:
+        id:
+            type: bigint
+            nullable: false
+            unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        nota:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: NOTA
+    manyToOne:
+        prd:
+            targetEntity: Producao
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                PRD_ID:
+                    referencedColumnName: ID
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

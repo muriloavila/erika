@@ -1,0 +1,25 @@
+ErikaBundle\Entity\Genero:
+    type: entity
+    table: Genero
+    id:
+        id:
+            type: bigint
+            nullable: false
+            unsigned: false
+            id: true
+            column: ID
+            generator:
+                strategy: IDENTITY
+    fields:
+        nome:
+            type: string
+            nullable: true
+            length: 200
+            fixed: false
+            column: NOME
+        idTmdbGnr:
+            type: bigint
+            nullable: true
+            unsigned: false
+            column: ID_TMDB_GNR
+    lifecycleCallbacks: {  }
