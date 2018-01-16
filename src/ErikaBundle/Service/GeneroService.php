@@ -23,8 +23,18 @@
 
 
 	    public function newGenero($genero)
-	    {
-	    	# code...
+	    {	
+	    	$em = $this->entityManager;
+	    	$genre = $em->getRepository(Genero::class)->findOneBy(array('idTmdbGnr' => $genero->id));
+	    	if(empty($genre) || $genre == null){
+	    		$genre = new Genero();
+	    		$genre->setNome($genero->name);
+	    		$genre->setIdTmdbGnr($genero->id);
+	    		$em->persist($genre);
+	    		$em->flush();
+	    	}
+
+	    	return $genre->getId();
 	    }
 	}
 

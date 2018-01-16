@@ -41,12 +41,12 @@
 			$filme_credits = $mcurl->getJsonToObject('movie/'.$id_mdb.'/credits', $parameters);
 
 			$generoService = $this->container->get('erika.genero');
-
+			$generosSalvos = array();
 			foreach ($filme_details->genres as $genero) {
-				$generosSalvos = $generoService->newGenero($genero);
+				$generosSalvos[] = $generoService->newGenero($genero);
 			}
 
-			return $filme_details->genres;
+			return $generosSalvos;
 		}
 	}
 
