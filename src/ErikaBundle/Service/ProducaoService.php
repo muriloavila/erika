@@ -57,9 +57,16 @@
 			$actorsSalvos = array();
 			$crewSalvos = array();
 
+			$count = 0;
 			foreach ($filme_credits->cast as $actor) {
 				$actorsSalvos[] = $elencoService->newElencoActor($actor);
+				if($count == 10){
+					break;
+				}
+				$count++;
 			}
+
+			
 
 			return $actorsSalvos;
 		}
