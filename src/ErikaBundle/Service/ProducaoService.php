@@ -52,7 +52,6 @@
 				$produtorasSalvas[] = $produtoraService->newProdutora($produtora);
 			}
 
-
 			$elencoService = $this->container->get('erika.elenco');
 			$actorsSalvos = array();
 			$crewSalvos = array();
@@ -66,7 +65,7 @@
 				$count++;
 			}
 
-			
+			$elencoProducaoTipoService = $this->container->get('erika.elenco_prducao_tipo');			
 
 			return $actorsSalvos;
 		}

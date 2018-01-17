@@ -13,6 +13,6 @@ services:
    erika.elenco:
        class: ErikaBundle\Service\ElencoService
        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
-   erika.elenco:
+   erika.elenco_prducao_tipo:
        class: ErikaBundle\Service\ElencoProducaoTipoService
        arguments: ["@doctrine.orm.entity_manager", "@service_container"]

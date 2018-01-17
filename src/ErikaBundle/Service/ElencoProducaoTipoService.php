@@ -9,7 +9,7 @@
 	/**
 	* 
 	*/
-	class ClassName extends AnotherClass
+	class ElencoProducaoTipoService
 	{
 		private $entityManager;
     	private $container;
