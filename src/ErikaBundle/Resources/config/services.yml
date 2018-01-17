@@ -16,3 +16,6 @@ services:
    erika.elenco_prducao_tipo:
        class: ErikaBundle\Service\ElencoProducaoTipoService
        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+   erika.genero_producao:
+       class: ErikaBundle\Service\GeneroProducaoService
+       arguments: ["@doctrine.orm.entity_manager", "@service_container"]

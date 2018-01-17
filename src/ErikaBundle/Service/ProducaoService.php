@@ -69,8 +69,10 @@
 			}
 
 			$elencoProducaoTipoService = $this->container->get('erika.elenco_prducao_tipo');
+			$ept = $elencoProducaoTipoService->saveActors($actorsSalvos, $filme_obj);
 
-			$retorno = $elencoProducaoTipoService->saveActors($actorsSalvos, $filme_obj);
+			$generoProducaoService = $this->container->get('erika.genero_producao');
+			$gp = $generoProducaoService->saveGeneroProducao($generosSalvos, $filme_obj);
 
 			return $retorno;
 		}
