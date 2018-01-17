@@ -51,7 +51,7 @@
 				$em->flush();
 	    	}
 
-	    	return $ator->getId();
+	    	return array("obj" => $ator, "char_name" => $actor->character);
 	    }
 
 	    public function newElencoCrew($crew)

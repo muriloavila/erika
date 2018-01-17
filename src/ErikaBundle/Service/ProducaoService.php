@@ -4,6 +4,7 @@
 	use Doctrine\ORM\EntityManager;
 	use Symfony\Component\DependencyInjection\Container;
 	use ErikaBundle\Entity\Producao;
+	use ErikaBundle\Entity\TipoProducao;
 
 
 	/**
@@ -39,6 +40,8 @@
 			$mcurl->setBase_uri("https://api.themoviedb.org/3/");
 			$filme_details = $mcurl->getJsonToObject('movie/'.$id_mdb, $parameters);
 			$filme_credits = $mcurl->getJsonToObject('movie/'.$id_mdb.'/credits', $parameters);
+			
+			$filme_obj = $this->saveMovie($filme_details);
 
 			$generoService = $this->container->get('erika.genero');
 			$generosSalvos = array();
@@ -65,9 +68,37 @@
 				$count++;
 			}
 
-			$elencoProducaoTipoService = $this->container->get('erika.elenco_prducao_tipo');			
+			$elencoProducaoTipoService = $this->container->get('erika.elenco_prducao_tipo');
 
-			return $actorsSalvos;
+			$retorno = $elencoProducaoTipoService->saveActors($actorsSalvos, $filme_obj);
+
+			return $retorno;
+		}
+
+		public function saveMovie($movie_details)
+		{
+			$em = $this->entityManager;
+			$producao = $em->getRepository(Producao::class)->findOneBy(array('idTmdb' => $movie_details->id));
+
+			if(empty($producao) || $producao == null){
+				$tipoPrd = $em->getRepository(TipoProducao::class)->findOneBy(array('id' => 1));
+				$producao = new Producao();
+				$ano = explode($movie_details->release_date, '-');
+
+				$producao->setTitulo($movie_details->title);
+				$producao->setPoster($movie_details->poster_path);
+				$producao->setResumo($movie_details->overview);
+				$producao->setAno($ano[0]);
+				$producao->setClassIndicativa(null);
+				$producao->setOrgTitulo($movie_details->original_title);
+				$producao->setIdTmdb($movie_details->id);
+				$producao->setTipoPrd($tipoPrd);
+
+				$em->persist($producao);
+				$em->flush();
+			}
+
+			return $producao;
 		}
 	}
 
