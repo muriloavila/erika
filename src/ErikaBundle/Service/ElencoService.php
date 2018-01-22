@@ -3,7 +3,7 @@
 	namespace ErikaBundle\Service;
 
 	use Doctrine\ORM\EntityManager;
-	use Symfony\Component\DependencyInjection\Container;
+    use Symfony\Component\DependencyInjection\Container;
 	use ErikaBundle\Entity\Elenco;
 	use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -56,7 +56,35 @@
 
 	    public function newElencoCrew($crew)
 	    {
-	    	return $crew;
+	    	$em = $this->entityManager;
+	    	$producao = $em->getRepository(Elenco::class)->findOneBy(array('idTmdbElc' => $crew->id));
+
+	    	if(empty($producao) || $producao == null){
+                $producao_detalhes = $this->getDetails($crew->id);
+
+                $producao = new Elenco();
+                $producao->setNome( $producao_detalhes->name );
+                $producao->setAbrev( $producao_detalhes->name );
+                $producao->setIdTmdbElc( $producao_detalhes->id );
+
+                if(isset($producao_detalhes->birthday) && $producao_detalhes->birthday != null){
+                    $data_falecimento = new \DateTime($producao_detalhes->deathday);
+                    $data_nascimento = new \DateTime($producao_detalhes->birthday);
+
+                    $producao->setIdade( $this->calculaIdade($producao_detalhes->birthday, $producao_detalhes->deathday) );
+                    $producao->setDtNascimento( $data_nascimento );
+                    $producao->setDtFalecimento( $data_falecimento );
+                }else{
+                    $producao->setIdade( 0 );
+                    $producao->setDtNascimento( null );
+                    $producao->setDtFalecimento( null );
+                }
+
+                $em->persist($producao);
+                $em->flush();
+            }
+
+            return array('obj' => $producao, 'department' => $crew->department);
 	    }
 
 

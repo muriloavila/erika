@@ -34,7 +34,7 @@
 	    		$em->flush();
 	    	}
 
-	    	return $genre->getId();
+	    	return $genre;
 	    }
 	}
 

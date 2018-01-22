@@ -50,6 +50,17 @@
 
 	    	return $salvos;
 	    }
+
+	    public function saveCrews(array $crews, $movie){
+    	    $salvos = array();
+
+    	    $em = $this->entityManager;
+            foreach ($crews as $crew) {
+                $tipoElencoCrew = $em->getRepository(TipoElenco::class)->findOneBy(array('descricao' => $crew['department']));
+
+
+            }
+        }
 	}
 
 ?>

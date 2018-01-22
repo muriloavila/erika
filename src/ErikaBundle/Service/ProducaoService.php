@@ -40,7 +40,7 @@
 			$mcurl->setBase_uri("https://api.themoviedb.org/3/");
 			$filme_details = $mcurl->getJsonToObject('movie/'.$id_mdb, $parameters);
 			$filme_credits = $mcurl->getJsonToObject('movie/'.$id_mdb.'/credits', $parameters);
-			
+
 			$filme_obj = $this->saveMovie($filme_details);
 
 			$generoService = $this->container->get('erika.genero');
@@ -68,22 +68,38 @@
 				$count++;
 			}
 
-			$elencoProducaoTipoService = $this->container->get('erika.elenco_prducao_tipo');
-			$ept = $elencoProducaoTipoService->saveActors($actorsSalvos, $filme_obj);
+			$count = 0;
+            foreach ($filme_credits->crew as $crew) {
+                $crewSalvos[] = $elencoService->newElencoCrew($crew);
+                if($count == 5){
+                    break;
+                }
+                $count++;
+			}
 
-			$generoProducaoService = $this->container->get('erika.genero_producao');
-			$gp = $generoProducaoService->saveGeneroProducao($generosSalvos, $filme_obj);
+            $tipoElencoService = $this->container->get('erika.tipo_elenco');
+            $te = $tipoElencoService->saveTipoElenco($crewSalvos);
 
-			return $retorno;
+            $elencoProducaoTipoService = $this->container->get('erika.elenco_prducao_tipo');
+            $ept = $elencoProducaoTipoService->saveActors($actorsSalvos, $filme_obj);
+            $cpt = $elencoProducaoTipoService->saveCrews($crewSalvos, $filme_obj);
+
+            $generoProducaoService = $this->container->get('erika.genero_producao');
+            $gp = $generoProducaoService->saveGeneroProducao($generosSalvos, $filme_obj);
+
+            $produtoraProducaoService = $this->container->get('erika.produtora_producao');
+            $pp = $produtoraProducaoService->saveProdutoraProducao($produtorasSalvas, $filme_obj);
+
+            return $te;
 		}
 
 		public function saveMovie($movie_details)
 		{
 			$em = $this->entityManager;
 			$producao = $em->getRepository(Producao::class)->findOneBy(array('idTmdb' => $movie_details->id));
+            $tipoPrd = $em->getRepository(TipoProducao::class)->findOneBy(array('id' => 1));
 
-			if(empty($producao) || $producao == null){
-				$tipoPrd = $em->getRepository(TipoProducao::class)->findOneBy(array('id' => 1));
+            if(empty($producao) || $producao == null){
 				$producao = new Producao();
 				$ano = explode($movie_details->release_date, '-');
 

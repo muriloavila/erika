@@ -25,14 +25,14 @@
 	    {
 	    	$em = $this->entityManager;
 	    	$production_company = $em->getRepository(Produtora::class)->findOneBy(array('idTmdbPdt' => $produtora->id));
-	    	if(empty($genre) || $genre == null){
+	    	if(empty($production_company) || $production_company == null){
 	    		$production_company = new Produtora();
 	    		$production_company->setNome($produtora->name);
 	    		$production_company->setIdTmdbPdt($produtora->id);
 	    		$em->persist($production_company);
 	    		$em->flush();
 	    	}
-	    	return $production_company->getId();
+	    	return $production_company;
 	    }
 	}
 
