@@ -5,3 +5,7 @@ erika_homepage:
 erika_robot:
     resource: "@ErikaBundle/Resources/config/routing/robot.yml"
     prefix:   /robot
+
+erika_core:
+    resource: "@ErikaBundle/Resources/config/routing/core.yml"
+    prefix:   /core

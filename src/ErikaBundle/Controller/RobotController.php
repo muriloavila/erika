@@ -17,7 +17,6 @@
 		}
 
 		public function searchMovieAction($movie_name)
-		//https://api.themoviedb.org/3/search/movie?include_adult=false&page=1&language=pt-BR&api_key=c3d594f81aba4df6403f9f5441d639e0&query=Get+Out
 		{
             $parameters = array(
                 "api_key"   => "c3d594f81aba4df6403f9f5441d639e0",
@@ -35,9 +34,7 @@
             $service = $this->get('erika.producao');
             $oi = $service->setNewMovie($teste);
 
-            dump($oi);
             return $this->render('ErikaBundle:Default:index.html.twig', array('name' => "OI"));
-            // return $this->render('ErikaBundle:Default:search.html.twig', array('movies' => $resposta['results'], 'busca' => $movie_name));
 		}
 	}
 

@@ -21,9 +21,11 @@
 	        $this->container = $container;
 	    }
 
-		function get()
+		function getMovie($id)
 		{
-			return "OI";
+			$em = $this->entityManager;
+			$movie = $em->getRepository(Producao::class)->findBy(array('id' => $id));
+			return $movie;
 		}
 
 		public function setNewMovie($movie)
@@ -90,7 +92,7 @@
             $produtoraProducaoService = $this->container->get('erika.produtora_producao');
             $pp = $produtoraProducaoService->saveProdutoraProducao($produtorasSalvas, $filme_obj);
 
-            return $te;
+            return $cpt;
 		}
 
 		public function saveMovie($movie_details)

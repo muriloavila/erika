@@ -55,11 +55,28 @@
     	    $salvos = array();
 
     	    $em = $this->entityManager;
+
             foreach ($crews as $crew) {
-                $tipoElencoCrew = $em->getRepository(TipoElenco::class)->findOneBy(array('descricao' => $crew['department']));
+                $department = $em->getRepository(TipoElenco::class)->findOneBy(array('descricao' => $crew['department']));
+                $crew_department = $em->getRepository(ElencoProducaoTipo::class)->findOneBy(array(
+                                                                                                                'prd' => $movie,
+                                                                                                                'tipoElc' => $department,
+                                                                                                                'elc' => $crew['obj']
+                                                                                                            ));
+                if(empty($crew_department) || $crew_department == null){
+                    $crew_department = new ElencoProducaoTipo();
+                    $crew_department->setPrd($movie);
+                    $crew_department->setElc($crew['obj']);
+                    $crew_department->setTipoElc($department);
 
+                    $em->persist($crew_department);
+                    $em->flush();
+                }
 
+                $salvos[] = $crew_department;
             }
+
+            return $salvos;
         }
 	}
 

@@ -1,0 +1,7 @@
+core:
+    path: /
+    defaults: { _controller: "ErikaBundle:Core:index" }
+
+core-search-movie:
+    path: search/movie/{movie_id}
+    defaults: { _controller: "ErikaBundle:Core:searchMovie" }
