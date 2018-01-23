@@ -8,6 +8,6 @@ class DefaultController extends Controller
 {
     public function indexAction($name = "index")
     {
-        return $this->render('ErikaBundle:Default:index.html.twig', array('name' => $name));
+        return $this->render('ErikaBundle:Default:index.html.twig', array('return' => $name));
     }
 }

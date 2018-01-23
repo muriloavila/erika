@@ -5,3 +5,7 @@ robot:
 robot-search-movie:
     path: search/movie/{movie_name}
     defaults: { _controller: "ErikaBundle:Robot:searchMovie" }
+
+robot-save-movie:
+    path: save/movie/
+    defaults: { _controller: "ErikaBundle:Robot:saveMovie" }

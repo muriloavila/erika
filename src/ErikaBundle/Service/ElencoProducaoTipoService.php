@@ -6,8 +6,9 @@
 	use Symfony\Component\DependencyInjection\Container;
 	use ErikaBundle\Entity\ElencoProducaoTipo;
 	use ErikaBundle\Entity\TipoElenco;
+    use Symfony\Component\Security\Acl\Exception\Exception;
 
-	/**
+    /**
 	* 
 	*/
 	class ElencoProducaoTipoService
@@ -40,9 +41,12 @@
 	    			$ept->setTipoElc($tipoElencoAtor);
 	    			$ept->setElc($actor['obj']);
 	    			$ept->setNomeChar($actor['char_name']);
-
-	    			$em->persist($ept);
-					$em->flush();
+                    try{
+                        $em->persist($ept);
+                        $em->flush();
+                    }catch (Exception $e){
+                        throw new Exception($e->getMessage(), 1);
+                    }
 	    		}
 
 	    		$salvos[] = $ept;

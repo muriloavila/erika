@@ -2,9 +2,20 @@
 
 {% block title %}Filmes Achados Pesquisando por {{busca}} {% endblock %}
 
+{% block javascripts %}
+    <script type="application/javascript">
+        var robotSaveControllerUrl = "{{ path('robot-save-movie') }}";
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/erika/js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/erika/js/search.js') }}"></script>
+{% endblock %}
+
+
 {% block body %}
 	<h2>Filmes Achados Pesquisando por {{busca}}</h2>
     {% for movie in movies %}
-        <p><label>{{ movie.title }}</label><input type="checkbox" name="movieSelect[]" id={{movie['id']}}> </p>
+        <p><label>{{ movie.title }}</label><input type="checkbox" name="movieSelect" id="movieSelect[]" movie_id={{movie.id}}> </p>
     {% endfor %}
+
+    <input type="button" value="INSERIR" id="insert">
 {% endblock %}

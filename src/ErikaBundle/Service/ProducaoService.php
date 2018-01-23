@@ -5,9 +5,10 @@
 	use Symfony\Component\DependencyInjection\Container;
 	use ErikaBundle\Entity\Producao;
 	use ErikaBundle\Entity\TipoProducao;
+    use Symfony\Component\Security\Acl\Exception\Exception;
 
 
-	/**
+    /**
 	* 
 	*/
 	class ProducaoService
@@ -30,7 +31,7 @@
 
 		public function setNewMovie($movie)
 		{
-			$id_mdb = $movie->id;
+			$id_mdb = $movie;
 			
 			$parameters = array(
                 "api_key"   => "c3d594f81aba4df6403f9f5441d639e0",
@@ -42,60 +43,64 @@
 			$mcurl->setBase_uri("https://api.themoviedb.org/3/");
 			$filme_details = $mcurl->getJsonToObject('movie/'.$id_mdb, $parameters);
 			$filme_credits = $mcurl->getJsonToObject('movie/'.$id_mdb.'/credits', $parameters);
+            try{
 
-			$filme_obj = $this->saveMovie($filme_details);
+                $filme_obj = $this->saveMovie($filme_details);
 
-			$generoService = $this->container->get('erika.genero');
-			$generosSalvos = array();
-			foreach ($filme_details->genres as $genero) {
-				$generosSalvos[] = $generoService->newGenero($genero);
-			}
-
-			$produtoraService = $this->container->get('erika.produtora');
-			$produtorasSalvas = array();
-			foreach ($filme_details->production_companies as $produtora) {
-				$produtorasSalvas[] = $produtoraService->newProdutora($produtora);
-			}
-
-			$elencoService = $this->container->get('erika.elenco');
-			$actorsSalvos = array();
-			$crewSalvos = array();
-
-			$count = 0;
-			foreach ($filme_credits->cast as $actor) {
-				$actorsSalvos[] = $elencoService->newElencoActor($actor);
-				if($count == 10){
-					break;
-				}
-				$count++;
-			}
-
-			$count = 0;
-            foreach ($filme_credits->crew as $crew) {
-                $crewSalvos[] = $elencoService->newElencoCrew($crew);
-                if($count == 5){
-                    break;
+                $generoService = $this->container->get('erika.genero');
+                $generosSalvos = array();
+                foreach ($filme_details->genres as $genero) {
+                    $generosSalvos[] = $generoService->newGenero($genero);
                 }
-                $count++;
-			}
 
-            $tipoElencoService = $this->container->get('erika.tipo_elenco');
-            $te = $tipoElencoService->saveTipoElenco($crewSalvos);
+                $produtoraService = $this->container->get('erika.produtora');
+                $produtorasSalvas = array();
+                foreach ($filme_details->production_companies as $produtora) {
+                    $produtorasSalvas[] = $produtoraService->newProdutora($produtora);
+                }
 
-            $elencoProducaoTipoService = $this->container->get('erika.elenco_prducao_tipo');
-            $ept = $elencoProducaoTipoService->saveActors($actorsSalvos, $filme_obj);
-            $cpt = $elencoProducaoTipoService->saveCrews($crewSalvos, $filme_obj);
+                $elencoService = $this->container->get('erika.elenco');
+                $actorsSalvos = array();
+                $crewSalvos = array();
 
-            $generoProducaoService = $this->container->get('erika.genero_producao');
-            $gp = $generoProducaoService->saveGeneroProducao($generosSalvos, $filme_obj);
+                $count = 0;
+                foreach ($filme_credits->cast as $actor) {
+                    $actorsSalvos[] = $elencoService->newElencoActor($actor);
+                    if($count == 10){
+                        break;
+                    }
+                    $count++;
+                }
 
-            $produtoraProducaoService = $this->container->get('erika.produtora_producao');
-            $pp = $produtoraProducaoService->saveProdutoraProducao($produtorasSalvas, $filme_obj);
+                $count = 0;
+                foreach ($filme_credits->crew as $crew) {
+                    $crewSalvos[] = $elencoService->newElencoCrew($crew);
+                    if($count == 5){
+                        break;
+                    }
+                    $count++;
+                }
 
-            return $cpt;
+                $tipoElencoService = $this->container->get('erika.tipo_elenco');
+                $te = $tipoElencoService->saveTipoElenco($crewSalvos);
+
+                $elencoProducaoTipoService = $this->container->get('erika.elenco_prducao_tipo');
+                $ept = $elencoProducaoTipoService->saveActors($actorsSalvos, $filme_obj);
+                $cpt = $elencoProducaoTipoService->saveCrews($crewSalvos, $filme_obj);
+
+                $generoProducaoService = $this->container->get('erika.genero_producao');
+                $gp = $generoProducaoService->saveGeneroProducao($generosSalvos, $filme_obj);
+
+                $produtoraProducaoService = $this->container->get('erika.produtora_producao');
+                $pp = $produtoraProducaoService->saveProdutoraProducao($produtorasSalvas, $filme_obj);
+
+                return $filme_obj->getTitulo();
+            }catch (Exception $e){
+                throw new Exception($e->getMessage(), 1);
+            }
 		}
 
-		public function saveMovie($movie_details)
+		private function saveMovie($movie_details)
 		{
 			$em = $this->entityManager;
 			$producao = $em->getRepository(Producao::class)->findOneBy(array('idTmdb' => $movie_details->id));
