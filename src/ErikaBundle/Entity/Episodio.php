@@ -40,6 +40,12 @@ class Episodio
     private $visto;
 
     /**
+     * @var integer
+     */
+
+    private $id_imdtb;
+
+    /**
      * @var \ErikaBundle\Entity\Producao
      */
     private $prd;
@@ -191,5 +197,21 @@ class Episodio
     public function getPrd()
     {
         return $this->prd;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdImdtb()
+    {
+        return $this->id_imdtb;
+    }
+
+    /**
+     * @param mixed $id_imdtb
+     */
+    public function setIdImdtb($id_imdtb)
+    {
+        $this->id_imdtb = $id_imdtb;
     }
 }

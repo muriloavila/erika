@@ -9,3 +9,11 @@ robot-search-movie:
 robot-save-movie:
     path: save/movie/
     defaults: { _controller: "ErikaBundle:Robot:saveMovie" }
+
+robot-search-serie:
+    path: search/serie/{serie_name}
+    defaults: {_controller: "ErikaBundle:Robot:searchSerie" }
+
+robot-save-serie:
+    path: save/serie/{serie_id}
+    defaults: {_controller: "ErikaBundle:Robot:saveSerie"}

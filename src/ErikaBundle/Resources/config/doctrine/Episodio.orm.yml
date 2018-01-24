@@ -42,6 +42,10 @@ ErikaBundle\Entity\Episodio:
             nullable: false
             default: '0'
             column: VISTO
+        id_imdtb:
+            type: bigint
+            nullable: true
+            column: ID_IMDTB
     manyToOne:
         prd:
             targetEntity: Producao

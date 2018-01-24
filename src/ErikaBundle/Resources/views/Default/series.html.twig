@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Series Encontradas Pesquisando por {{busca}} {% endblock %}
+
+{% block javascripts %}
+    <script type="application/javascript">
+        var robotSaveControllerUrl = "{{ path('robot-save-movie') }}";
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/erika/js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/erika/js/search.js') }}"></script>
+{% endblock %}
+
+
+{% block body %}
+    <h2>Series Encontradas Pesquisando por {{busca}} </h2>
+    {% for serie in series %}
+        <div style="width: 600px;">
+            <p><label>{{ serie.name }}</label><input type="checkbox" name="serieSelect" id="serieSelect[]" serie_id={{serie.id}}> </p>
+            <div>{{ serie.overview }}</div>
+            <hr>
+        </div>
+    {% endfor %}
+
+    <input type="button" value="INSERIR" id="insert">
+{% endblock %}

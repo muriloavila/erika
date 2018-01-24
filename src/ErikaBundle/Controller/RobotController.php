@@ -3,7 +3,6 @@
 	namespace ErikaBundle\Controller;
 
 	use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-    use Lsw\ApiCallerBundle\Call\HttpGetJson;
     use Symfony\Component\HttpFoundation\JsonResponse;
     use Symfony\Component\HttpFoundation\Request;
     use Symfony\Component\Security\Acl\Exception\Exception;
@@ -16,7 +15,7 @@
 		
 		public function indexAction()
 		{
-			return $this->render('ErikaBundle:Default:index.html.twig', array('name' => "Robot Index"));
+			return $this->render('ErikaBundle:Default:index.html.twig', array('return' => "Robot Index"));
 		}
 
 		public function searchMovieAction($movie_name)
@@ -31,7 +30,7 @@
             $mcurl->setBase_uri("https://api.themoviedb.org/3/");
 
             $retorno = $mcurl->getJsonToObject('search/movie', $parameters);
-            dump($retorno);
+
             return $this->render('ErikaBundle:Default:search.html.twig', array('busca' => urldecode($movie_name), 'movies' => $retorno->results));
 		}
 
@@ -42,16 +41,42 @@
             foreach ($movies as $movie_id) {
                 $service = $this->get('erika.producao');
                 try{
-                    $oi = $service->setNewMovie($movie_id);
+                    $retorno = $service->setNewMovie($movie_id);
                 }catch (Exception $e){
-                    $oi = false;
+                    $retorno = false;
                     break;
                 }
             }
 
-            return new JsonResponse(array('resposta' => $oi));
+            return new JsonResponse(array('resposta' => $retorno));
 
         }
-    }
+
+
+	    public function searchSerieAction($serie_name){
+
+            $parameters = array(
+                "api_key"   => "c3d594f81aba4df6403f9f5441d639e0",
+                "language"  => "pt-BR",
+                "query"     => $serie_name
+            );
+
+            $mcurl = $this->get('erika.mcurl');
+            $mcurl->setBase_uri("https://api.themoviedb.org/3/");
+
+            $retorno = $mcurl->getJsonToObject('search/tv', $parameters);
+
+            return $this->render('ErikaBundle:Default:series.html.twig', array('busca' => $serie_name, 'series' => $retorno->results));
+        }
+
+        public function saveSerieAction($serie_id){
+	        $service = $this->get('erika.producao');
+
+	        $retorno = $service->setNewSerie($serie_id);
+            dump($retorno);
+            return $this->render('ErikaBundle:Default:index.html.twig', array('return' => $serie_id));
+            //return new JsonResponse($retorno);
+        }
+	}
 
 ?>

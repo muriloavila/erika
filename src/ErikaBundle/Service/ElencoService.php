@@ -114,12 +114,13 @@
 				$mes = ($data_end[1]);
 				$ano = ($data_end[0]);
 			}
-			
-			$nascimento = explode('-', $data_nascimento);
-			$dianasc = ($nascimento[2]);
-			$mesnasc = ($nascimento[1]);
-			$anonasc = ($nascimento[0]);
-			
+			if($data_nascimento != null){
+                $nascimento = explode('-', $data_nascimento);
+                $dianasc = isset($nascimento[2]) ? $nascimento[2] : '01' ;
+                $mesnasc = isset($nascimento[1]) ? $nascimento[1] : '01';
+                $anonasc = isset($nascimento[0]) ? $nascimento[0] : '1900';
+            }
+
 			//Calculando sua idade
 			$idade = $ano - $anonasc; // simples, ano- nascimento!
 			if ($mes < $mesnasc) // se o mes é menor, só subtrair da idade
