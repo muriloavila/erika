@@ -32,7 +32,7 @@
 			$response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			
 			if($response_code == '404'){
-				throw new Exception("Error Processing Request! Page Not Found!", 1);
+				return false;
 			}
 
 			curl_close($ch);

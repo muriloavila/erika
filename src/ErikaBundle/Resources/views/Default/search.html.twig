@@ -14,8 +14,17 @@
 {% block body %}
 	<h2>Filmes Achados Pesquisando por {{busca}}</h2>
     {% for movie in movies %}
-        <p><label>{{ movie.title }}</label><input type="checkbox" name="movieSelect" id="movieSelect[]" movie_id={{movie.id}}> </p>
+        <div style="width: 600px;">
+            <p><label>{{ movie.title }}</label><input type="checkbox" name="movieSelect" id="movieSelect[]" movie_id={{movie.id}}> </p>
+            <div>{{ movie.overview }}</div>
+            <hr>
+        </div>
+
     {% endfor %}
 
     <input type="button" value="INSERIR" id="insert">
+    <div>
+        <img src="{{ asset('bundles/erika/assets/loading.gif') }}" style="display: none" id="loading">
+        <label id="message"></label>
+    </div>
 {% endblock %}

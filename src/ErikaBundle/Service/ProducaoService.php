@@ -100,32 +100,6 @@
             }
 		}
 
-		private function saveMovie($movie_details)
-		{
-			$em = $this->entityManager;
-			$producao = $em->getRepository(Producao::class)->findOneBy(array('idTmdb' => $movie_details->id));
-            $tipoPrd = $em->getRepository(TipoProducao::class)->findOneBy(array('id' => 1));
-
-            if(empty($producao) || $producao == null){
-				$producao = new Producao();
-				$ano = explode('-', $movie_details->release_date);
-
-				$producao->setTitulo($movie_details->title);
-				$producao->setPoster($movie_details->poster_path);
-				$producao->setResumo($movie_details->overview);
-				$producao->setAno($ano[0]);
-				$producao->setClassIndicativa(null);
-				$producao->setOrgTitulo($movie_details->original_title);
-				$producao->setIdTmdb($movie_details->id);
-				$producao->setTipoPrd($tipoPrd);
-
-				$em->persist($producao);
-				$em->flush();
-			}
-
-			return $producao;
-		}
-
         public function setNewSerie($serie){
             $parameters = array(
                 "api_key"   => "c3d594f81aba4df6403f9f5441d639e0",
@@ -147,7 +121,7 @@
                 foreach ($serie_details->created_by as $key => $creator){
                     $serie_details->created_by[$key]->department = 'Creator';
                 }
-
+                $serie_credit->cast = array();
                 $serie_credit->crew = $serie_details->created_by;
 
                 $elenco_salvo = $this->saveActorsAndCrew($serie_credit);
@@ -165,40 +139,36 @@
                 $produtoraProducaoService = $this->container->get('erika.produtora_producao');
                 $pp = $produtoraProducaoService->saveProdutoraProducao($produtoras_salvas, $serie_obj);
 
-
-                $episodioService = $this->container->get('erika.episodio');
-                $episodiosTemporada = array();
-                $episodiosSalvos = array();
-                foreach ($serie_details->seasons as $season) {
-                    $episodiosTemporada[] = $episodioService->EpisodioTemporada($serie, $season);
-                }
-
-
-                if(isset($episodiosTemporada[0])){
-                    if($episodiosTemporada[0][0]->season_number == 0){
-                        unset($episodiosTemporada[0]);
-                    }
-                }
-
-                foreach ($episodiosTemporada as $temporada) {
-                    $episodioSalvo = $episodioService->saveEpisodio($temporada, $serie_obj);
-                    $episodiosSalvos[] = $episodioSalvo;
-                }
-
-                $elencoService = $this->container->get('erika.elenco');
-
-                foreach ($episodiosSalvos as $epiSalvo) {
-                    $retorno = $epiSalvo[0]['actorsSalvo'];
-                }
-
-//                $retorno = $episodiosSalvos;
-
-
+                return $serie_obj;
             }catch (Exception $e){
                 throw new Exception($e->getMessage(), 1);
             }
+        }
 
-            return $retorno;
+        public function saveActorsAndCrew($credits){
+            $elencoService = $this->container->get('erika.elenco');
+            $actorsSalvos = array();
+            $crewSalvos = array();
+
+            $count = 0;
+            foreach ($credits->cast as $actor) {
+                $actorsSalvos[] = $elencoService->newElencoActor($actor);
+                if($count == 5){
+                    break;
+                }
+                $count++;
+            }
+
+            $count = 0;
+            foreach ($credits->crew as $crew) {
+                $crewSalvos[] = $elencoService->newElencoCrew($crew);
+                if($count == 5){
+                    break;
+                }
+                $count++;
+            }
+
+            return array('actorsSalvos' => $actorsSalvos, 'crewSalvos' => $crewSalvos);
         }
 
         private function saveSerie($serie_details){
@@ -238,7 +208,33 @@
             return $generosSalvos;
         }
 
-        private function  saveProductions($production_companies){
+        private function saveMovie($movie_details)
+        {
+            $em = $this->entityManager;
+            $producao = $em->getRepository(Producao::class)->findOneBy(array('idTmdb' => $movie_details->id));
+            $tipoPrd = $em->getRepository(TipoProducao::class)->findOneBy(array('id' => 1));
+
+            if(empty($producao) || $producao == null){
+                $producao = new Producao();
+                $ano = explode('-', $movie_details->release_date);
+
+                $producao->setTitulo($movie_details->title);
+                $producao->setPoster($movie_details->poster_path);
+                $producao->setResumo($movie_details->overview);
+                $producao->setAno($ano[0]);
+                $producao->setClassIndicativa(null);
+                $producao->setOrgTitulo($movie_details->original_title);
+                $producao->setIdTmdb($movie_details->id);
+                $producao->setTipoPrd($tipoPrd);
+
+                $em->persist($producao);
+                $em->flush();
+            }
+
+            return $producao;
+        }
+
+        private function saveProductions($production_companies){
             $produtoraService = $this->container->get('erika.produtora');
             $produtorasSalvas = array();
             foreach ($production_companies as $produtora) {
@@ -248,35 +244,6 @@
             return $produtorasSalvas;
         }
 
-        public function saveActorsAndCrew($credits){
-            $elencoService = $this->container->get('erika.elenco');
-            $actorsSalvos = array();
-            $crewSalvos = array();
-
-            $count = 0;
-            foreach ($credits->cast as $actor) {
-                $actorsSalvos[] = $elencoService->newElencoActor($actor);
-                if($count == 10){
-                    break;
-                }
-                $count++;
-            }
-
-            $count = 0;
-            foreach ($credits->crew as $crew) {
-                $crewSalvos[] = $elencoService->newElencoCrew($crew);
-                if($count == 5){
-                    break;
-                }
-                $count++;
-            }
-
-            return array('actorsSalvos' => $actorsSalvos, 'crewSalvos' => $crewSalvos);
-        }
-
 
     }
-
-
-
 ?>

@@ -16,6 +16,9 @@ function insert() {
         return;
     }
 
+    $("#loading").show();
+    $("#message").html("");
+
     $.ajax({
         url: robotSaveControllerUrl,
         type: 'POST',
@@ -24,6 +27,8 @@ function insert() {
         async: true,
         success: function (data) {
             console.log(data);
+            $("#loading").hide();
+            $("#message").html("<b>"+data.resposta+" Foi Cadastrado com sucesso!</b>");
         }
     });
     return;

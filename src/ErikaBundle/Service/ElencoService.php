@@ -24,9 +24,14 @@
 
 	    public function newElencoActor($actor)
 	    {
+	        if($actor == null || empty($actor)){
+	            return;
+            }
 	    	$em = $this->entityManager;
 	    	$ator = $em->getRepository(Elenco::class)->findOneBy(array('idTmdbElc' => $actor->id));
+
 	    	if(empty($ator) || $ator == null){
+
 	    		$ator_detalhes = $this->getDetails($actor->id);
 
 	    		$ator = new Elenco();
@@ -35,6 +40,11 @@
 				$ator->setIdTmdbElc( $ator_detalhes->id );
 				
 				if(isset($ator_detalhes->birthday) && $ator_detalhes->birthday != null){
+
+				    if(!isset($ator_detalhes->deathday)){
+                        $ator_detalhes->deathday = null;
+                    }
+
 		    		$data_falecimento = new \DateTime($ator_detalhes->deathday);
 					$data_nascimento = new \DateTime($ator_detalhes->birthday);
 					
@@ -61,14 +71,23 @@
 
 	    	if(empty($producao) || $producao == null){
                 $producao_detalhes = $this->getDetails($crew->id);
-
+                if(empty($producao_detalhes)){
+                    return null;
+                }
                 $producao = new Elenco();
                 $producao->setNome( $producao_detalhes->name );
                 $producao->setAbrev( $producao_detalhes->name );
                 $producao->setIdTmdbElc( $producao_detalhes->id );
 
                 if(isset($producao_detalhes->birthday) && $producao_detalhes->birthday != null){
+
+                    if(!isset($producao_detalhes->deathday)){
+                        $producao_detalhes->deathday = date('Y-m-d');
+                    }
+
+
                     $data_falecimento = new \DateTime($producao_detalhes->deathday);
+
                     $data_nascimento = new \DateTime($producao_detalhes->birthday);
 
                     $producao->setIdade( $this->calculaIdade($producao_detalhes->birthday, $producao_detalhes->deathday) );

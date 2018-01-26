@@ -17,3 +17,7 @@ robot-search-serie:
 robot-save-serie:
     path: save/serie/{serie_id}
     defaults: {_controller: "ErikaBundle:Robot:saveSerie"}
+
+robot-save-serie-season:
+    path: save/serie/{serie_id}/season/{season}
+    defaults: {_controller: "ErikaBundle:Robot:saveSeason"}
