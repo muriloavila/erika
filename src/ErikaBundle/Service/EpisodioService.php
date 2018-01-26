@@ -73,6 +73,7 @@ class EpisodioService
             $episodio_serie->setNome($episode->name);
             $episodio_serie->setResumo($episode->overview);
             $episodio_serie->setPrd($serie);
+            $episodio_serie->setIdImdtb($serie_id);
 
             $em->persist($episodio_serie);
             $em->flush();

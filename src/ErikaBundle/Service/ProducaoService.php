@@ -25,8 +25,8 @@
 		function getMovie($id)
 		{
 			$em = $this->entityManager;
-			$movie = $em->getRepository(Producao::class)->findBy(array('id' => $id));
-			return $movie;
+			$prd = $em->getRepository(Producao::class)->findBy(array('id' => $id));
+			return $prd;
 		}
 
 		public function setNewMovie($movie)

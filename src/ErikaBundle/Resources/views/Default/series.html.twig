@@ -4,10 +4,12 @@
 
 {% block javascripts %}
     <script type="application/javascript">
-        var robotSaveControllerUrl = "{{ path('robot-save-movie') }}";
+        var robotSaveControllerUrl = "{{ path('robot-save-serie') }}";
+        var robotSearchControllerUrl = "{{ path('robot-search-serie-season') }}"
+        var robotSaveSeasonControllerUrls = "{{ path('robot-save-serie-season') }}"
     </script>
     <script type="text/javascript" src="{{ asset('bundles/erika/js/jquery-3.3.1.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/erika/js/search.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/erika/js/serie.js') }}"></script>
 {% endblock %}
 
 
@@ -19,7 +21,26 @@
             <div>{{ serie.overview }}</div>
             <hr>
         </div>
+
     {% endfor %}
 
     <input type="button" value="INSERIR" id="insert">
+    <div>
+        <img src="{{ asset('bundles/erika/assets/loading.gif') }}" style="display: none" id="loading">
+        <label id="message"></label>
+    </div>
+
+    <div style="display: none" id="seasons">
+        <label>Deseja Cadastrar as Temporadas?</label>
+        <input type="button" value="Checar Temporadas" id="season">
+    </div>
+
+    <div style="display: none" id="insert_seasons">
+        <label>Escolha a season para cadastrar</label>
+        <select id="temporadas">
+            <option value="">Selecione</option>
+        </select>
+        <br>
+        <input type="button" value="Inserir Temporada" id="insereTemp">
+    </div>
 {% endblock %}
