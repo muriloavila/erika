@@ -23,13 +23,18 @@
 	        $this->container = $container;
 	    }
 
-		function getProducao($id)
+		function getMovie($id)
 		{
 			$em = $this->entityManager;
-            $producao = $em->getRepository(Producao::class)->findOneBy(array('id' => $id));
+			$tipoProducao = $em->getRepository(TipoProducao::class)->findBy(array('id' => 1));
+            $producao = $em->getRepository(Producao::class)->findOneBy(array('id' => $id, 'tipoPrd' => $tipoProducao));
 
-			return $this->toArray($producao);
-		}
+            if(empty($producao)){
+                return null;
+            }
+
+            return $producao;
+        }
 
 		public function setNewMovie($movie)
 		{

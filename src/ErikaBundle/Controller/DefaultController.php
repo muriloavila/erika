@@ -6,8 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name = "index")
+    public function indexAction()
     {
-        return $this->render('ErikaBundle:Default:index.html.twig', array('return' => $name));
+        return $this->render('ErikaBundle:Default:index.html.twig', array('return' => "oi"));
     }
 }

@@ -80,4 +80,12 @@ class Produtora
     {
         return $this->idTmdbPdt;
     }
+
+    public function toArray(){
+        return array(
+            'id' => $this->id,
+            'nome' => $this->nome,
+            'idTmdbPdt' => $this->idTmdbPdt
+        );
+    }
 }

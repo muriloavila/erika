@@ -11,5 +11,5 @@ erika_core:
     prefix:   /core
 
 erika_movie:
-    path:     producao/{id_movie}
-    defaults: { _controller: ErikaBundle:Api:Producao }
+    path:     movie/{id_movie}
+    defaults: { _controller: ErikaBundle:Api:Movie }

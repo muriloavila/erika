@@ -4,6 +4,7 @@
 
 	use Doctrine\ORM\EntityManager;
     use ErikaBundle\Entity\GeneroProducao;
+    use ErikaBundle\Entity\Producao;
     use Symfony\Component\DependencyInjection\Container;
 
 	/**
@@ -20,6 +21,17 @@
 	        $this->entityManager = $entityManager;
 	        $this->container = $container;
 	    }
+
+        public function getGeneros(Producao $producao){
+            if(empty($producao)){
+                return null;
+            }
+
+            $em = $this->entityManager;
+            $generos = $em->getRepository(GeneroProducao::class)->findBy(array('prd' => $producao));
+
+            return $generos;
+        }
 
 	    public function saveGeneroProducao($generos, $movie)
 	    {

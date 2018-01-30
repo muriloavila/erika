@@ -249,4 +249,18 @@ class Producao
         return $this->tipoPrd;
     }
 
+    public function toArray(){
+        return array(
+            'id' => $this->id,
+            'titulo' => $this->titulo,
+            'poster' => $this->poster,
+            'resumo' => $this->resumo,
+            'ano'    => $this->ano,
+            'classIndicativa' => $this->classIndicativa,
+            'orgTitulo' => $this->orgTitulo,
+            'idTmdb' => $this->idTmdb,
+            'tipoPrd' => $this->tipoPrd->getNome()
+        );
+    }
+
 }

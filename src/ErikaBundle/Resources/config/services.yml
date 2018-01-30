@@ -30,4 +30,4 @@ services:
        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
    erika.elenco_episodio_tipo:
           class: ErikaBundle\Service\ElencoEpisodioTipoService
-          arguments: ["@doctrine.orm.entity_manager", "@service_container"
+          arguments: ["@doctrine.orm.entity_manager", "@service_container"]

@@ -80,4 +80,12 @@ class Genero
     {
         return $this->idTmdbGnr;
     }
+
+    public function toArray(){
+        return array(
+            'id' => $this->id,
+            'nome' => $this->nome,
+            'idTmdbGnr' => $this->idTmdbGnr
+        );
+    }
 }

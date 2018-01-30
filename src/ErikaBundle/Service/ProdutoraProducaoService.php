@@ -3,6 +3,7 @@
 
 namespace ErikaBundle\Service;
 
+use Doctrine\Entity;
 use Doctrine\ORM\EntityManager;
 use ErikaBundle\Entity\ProdutoraProducao;
 use Symfony\Component\DependencyInjection\Container;
@@ -18,6 +19,20 @@ class ProdutoraProducaoService
         $this->container = $container;
     }
 
+    public function getProdutoras($producao){
+        if(empty($producao)){
+            return null;
+        }
+
+        $em = $this->entityManager;
+        $produtoras  = $em->getRepository(ProdutoraProducao::class)->findBy(array('prd' => $producao));
+
+        if(empty($produtoras)){
+            return null;
+        }
+
+        return $produtoras;
+    }
 
     public function saveProdutoraProducao($produtoras, $filme){
         $em = $this->entityManager;
