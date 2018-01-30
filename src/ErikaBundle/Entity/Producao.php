@@ -248,4 +248,5 @@ class Producao
     {
         return $this->tipoPrd;
     }
+
 }

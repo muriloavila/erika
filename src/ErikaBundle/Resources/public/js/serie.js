@@ -78,8 +78,8 @@ function insereSeason() {
         data: {'serie_id' : $("#seasons").attr('season_id'), 'season': $("#temporadas").val()},
         async: true,
         success: function (data) {
-            $('body').append('<label>Temporada'+$("#temporadas").val()+' Inclusa');
-
+            $('body').append('<label>Temporada '+$("#temporadas").val()+' Inclusa');
+            $("#loading").hide();
             $("#temporadas option[value='"+season+"']").each(function() {
                 $(this).remove();
             });

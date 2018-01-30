@@ -9,3 +9,7 @@ erika_robot:
 erika_core:
     resource: "@ErikaBundle/Resources/config/routing/core.yml"
     prefix:   /core
+
+erika_movie:
+    path:     producao/{id_movie}
+    defaults: { _controller: ErikaBundle:Api:Producao }

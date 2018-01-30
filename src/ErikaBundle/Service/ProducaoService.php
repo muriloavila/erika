@@ -2,7 +2,8 @@
 	namespace ErikaBundle\Service;
 
 	use Doctrine\ORM\EntityManager;
-	use Symfony\Component\DependencyInjection\Container;
+    use Proxies\__CG__\ErikaBundle\Entity\GeneroProducao;
+    use Symfony\Component\DependencyInjection\Container;
 	use ErikaBundle\Entity\Producao;
 	use ErikaBundle\Entity\TipoProducao;
     use Symfony\Component\Security\Acl\Exception\Exception;
@@ -22,11 +23,12 @@
 	        $this->container = $container;
 	    }
 
-		function getMovie($id)
+		function getProducao($id)
 		{
 			$em = $this->entityManager;
-			$prd = $em->getRepository(Producao::class)->findBy(array('id' => $id));
-			return $prd;
+            $producao = $em->getRepository(Producao::class)->findOneBy(array('id' => $id));
+
+			return $this->toArray($producao);
 		}
 
 		public function setNewMovie($movie)
@@ -244,6 +246,19 @@
             return $produtorasSalvas;
         }
 
+        public function toArray(Producao $producao){
 
+            return array(
+                'id' => $producao->getId(),
+                'titulo' => $producao->getTitulo(),
+                'poster' => $producao->getPoster(),
+                'resumo' => $producao->getResumo(),
+                'ano'   => $producao->getAno(),
+                'classIndicativa' => $producao->getClassIndicativa(),
+                'orgTitulo' => $producao->getOrgTitulo(),
+                'idTmdb' => $producao->getIdTmdb(),
+                'tipoPrd' => $producao->getTipoPrd()->getNome()
+            );
+        }
     }
 ?>
