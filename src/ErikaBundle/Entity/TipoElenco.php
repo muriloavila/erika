@@ -52,4 +52,11 @@ class TipoElenco
     {
         return $this->descricao;
     }
+
+    public function toArray(){
+        return array(
+            'id' => $this->id,
+            'descricao' => $this->descricao
+        );
+    }
 }

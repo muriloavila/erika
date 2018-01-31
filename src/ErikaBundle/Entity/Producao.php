@@ -253,7 +253,7 @@ class Producao
         return array(
             'id' => $this->id,
             'titulo' => $this->titulo,
-            'poster' => $this->poster,
+            'poster' => 'https://image.tmdb.org/t/p/w500'.$this->poster,
             'resumo' => $this->resumo,
             'ano'    => $this->ano,
             'classIndicativa' => $this->classIndicativa,

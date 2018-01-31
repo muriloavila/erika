@@ -10,6 +10,12 @@ erika_core:
     resource: "@ErikaBundle/Resources/config/routing/core.yml"
     prefix:   /core
 
-erika_movie:
+erika_get_movie:
     path:     movie/{id_movie}
-    defaults: { _controller: ErikaBundle:Api:Movie }
+    defaults: { _controller: ErikaBundle:Api:GetMovie }
+    methods:    [GET]
+
+erika_put_movie:
+    path:     movie/{id_movie}
+    defaults: { _controller: ErikaBundle:Api:PutMovie }
+    methods:  [PUT]

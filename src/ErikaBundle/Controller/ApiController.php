@@ -10,11 +10,15 @@ use Symfony\Component\Security\Acl\Exception\Exception;
 
 class ApiController extends Controller
 {
-    public function movieAction($id_movie)
+    public function getMovieAction($id_movie)
     {
         $response = new JsonResponse();
         $service = $this->get('erika.producao');
         $prd = $service->getMovie($id_movie);
+
+        if($prd == null){
+            return new JsonResponse(array('response' => 'Movie Not Find'));
+        }
 
         $genero_service = $this->get('erika.genero_producao');
         $generos = $genero_service->getGeneros($prd);
@@ -32,7 +36,20 @@ class ApiController extends Controller
             $array['produtoras'][] = $produtora->getPdt()->toArray();
         }
 
-        //dump($produtoras);
+        $elenco_service = $this->get('erika.elenco_prducao_tipo');
+        $elenco = $elenco_service->getTipoElenco($prd);
+
+        foreach ($elenco as $elc) {
+            $elenco_um = $elc->getElc()->toArray();
+
+            if($elc->getTipoElc()->getId() == 3){
+                $elenco_um['nome_char'] = $elc->getNomeChar();
+                $array['atores'][] = $elenco_um;
+            } else {
+                $elenco_um['tipoPrd'] = $elc->getTipoElc()->getDescricao();
+                $array['producao'][] = $elenco_um;
+            }
+        }
         return new JsonResponse($array);
     }
 }

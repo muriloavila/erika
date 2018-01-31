@@ -82,6 +82,22 @@
 
             return $salvos;
         }
+
+	    public function getTipoElenco($producao){
+            if(empty($producao)){
+                return null;
+            }
+
+            $em = $this->entityManager;
+            $elencoTipo = $em->getRepository(ElencoProducaoTipo::class)->findBy(array('prd' => $producao));
+
+            if(empty($elencoTipo)){
+                return null;
+            }
+
+            return $elencoTipo;
+        }
+
 	}
 
 ?>

@@ -248,4 +248,18 @@ class Elenco
     {
         return $this->dtFalecimento;
     }
+
+    public function toArray(){
+        return array(
+            'id' => $this->id,
+            'nome' => $this->nome,
+            'abrev' => $this->abrev,
+            'idade' => $this->idade,
+            'foto'  => $this->foto,
+            'twitterLink' => $this->twitterLink,
+            'idTmdbElc' => $this->idTmdbElc,
+            'dtNascimento' => $this->dtNascimento,
+            'dtFalecimento' => $this->dtFalecimento
+        );
+    }
 }
