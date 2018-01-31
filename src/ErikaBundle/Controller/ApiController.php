@@ -35,6 +35,11 @@ class ApiController extends Controller
             $array['produtoras'][] = $produtora->getPdt()->toArray();
         }
 
+        $watchedService = $this->get('erika.watched');
+        $vistos = $watchedService->getWatched($prd);
+
+        $array['visto'] = $vistos;
+
         $elenco_service = $this->get('erika.elenco_prducao_tipo');
         $elenco = $elenco_service->getTipoElenco($prd);
 

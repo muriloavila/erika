@@ -31,3 +31,6 @@ services:
    erika.elenco_episodio_tipo:
           class: ErikaBundle\Service\ElencoEpisodioTipoService
           arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+   erika.watched:
+       class: ErikaBundle\Service\WatchedService
+       arguments: ['@doctrine.orm.entity_manager', "@service_container"]

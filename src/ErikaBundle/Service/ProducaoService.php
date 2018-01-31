@@ -68,6 +68,7 @@
             try {
                 $this->entityManager->persist($filme);
                 $this->entityManager->flush();
+
                 return $filme;
             }catch (Exception $e){
                 throw new Exception($e->getMessage(), 1);
