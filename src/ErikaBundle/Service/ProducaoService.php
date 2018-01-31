@@ -36,6 +36,44 @@
             return $producao;
         }
 
+        public function setMovie($id_movie, $parameters){
+            $filme = $this->getMovie($id_movie);
+
+            extract($parameters);
+
+            if(!empty($titulo) && $titulo != ''){
+                $filme->setTitulo($titulo);
+            }
+
+            if(!empty($poster) && $poster != ''){
+                $filme->setPoster($poster);
+            }
+
+            if(!empty($resumo) && $resumo != ''){
+                $filme->setResumo($resumo);
+            }
+
+            if(!empty($ano) && $ano != ''){
+                $filme->setAno($ano);
+            }
+
+            if(!empty($classIndicativa) && $classIndicativa != ''){
+                $filme->setClassIndicativa($classIndicativa);
+            }
+
+            if(!empty($orgTitulo) && $orgTitulo != ''){
+                $filme->setOrgTitulo($orgTitulo);
+            }
+
+            try {
+                $this->entityManager->persist($filme);
+                $this->entityManager->flush();
+                return $filme;
+            }catch (Exception $e){
+                throw new Exception($e->getMessage(), 1);
+            }
+        }
+
 		public function setNewMovie($movie)
 		{
 			$id_mdb = $movie;

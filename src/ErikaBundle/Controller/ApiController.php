@@ -12,7 +12,6 @@ class ApiController extends Controller
 {
     public function getMovieAction($id_movie)
     {
-        $response = new JsonResponse();
         $service = $this->get('erika.producao');
         $prd = $service->getMovie($id_movie);
 
@@ -51,5 +50,17 @@ class ApiController extends Controller
             }
         }
         return new JsonResponse($array);
+    }
+
+    public function putMovieAction($id_movie, Request $request){
+        $parameters = $request->query->all();
+        $service = $this->get('erika.producao');
+
+        try{
+            $retono = $service->setMovie($id_movie, $parameters);
+            return new JsonResponse(array('retorno' => 'true'));
+        }catch (Exception $e){
+            return new JsonResponse(array('retorno' => 'false', 'mensagem' => $e->getMessage()));
+        }
     }
 }
