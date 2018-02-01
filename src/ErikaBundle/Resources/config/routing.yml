@@ -19,3 +19,8 @@ erika_put_movie:
     path:     movie/{id_movie}
     defaults: { _controller: ErikaBundle:Api:PutMovie }
     methods:  [PUT]
+
+erika_put_visto:
+    path:   visto/{id_movie}
+    defaults: { _controller: ErikaBundle:Api:PutVisto }
+    methods:  [PUT]

@@ -3,8 +3,10 @@
 namespace ErikaBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use ErikaBundle\Entity\Producao;
 use ErikaBundle\Entity\Watched;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Security\Acl\Exception\Exception;
 
 class WatchedService
 {
@@ -29,7 +31,40 @@ class WatchedService
             return false;
         }
 
-        return true;
+        return $vistos;
+    }
+
+    public function atualizaWatched($producao_id, $parametros){
+        if(empty($producao_id)){
+            return null;
+        }
+
+        extract($parametros);
+
+        $em = $this->entityManager;
+        $producao = $em->getRepository(Producao::class)->findOneBy(array('id' => $producao_id));
+
+        $vistos = $em->getRepository(Watched::class)->findBy(array('prd' => $producao));
+
+        if($parametros['visto'] == false){
+            $em->remove($vistos);
+            $em->flush();
+            return array('retorno' => 'Filme retirado dos não vistos');
+        }
+
+        if(empty($vistos)){
+            $vistos = new Watched();
+        }
+
+        $vistos->setPrd($producao);
+        if(!empty($nota)){
+            $vistos->setNota($nota);
+        }
+
+        $em->persist($vistos);
+        $em->flush();
+
+        return array('retorno' => 'Filme incluso nos Vistos');
     }
 
 }

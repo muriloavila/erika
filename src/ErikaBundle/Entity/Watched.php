@@ -80,4 +80,11 @@ class Watched
     {
         return $this->prd;
     }
+
+    public function toArray(){
+        return array(
+            'id' => $this->id,
+            'nota' => $this->nota
+        );
+    }
 }

@@ -38,7 +38,13 @@ class ApiController extends Controller
         $watchedService = $this->get('erika.watched');
         $vistos = $watchedService->getWatched($prd);
 
-        $array['visto'] = $vistos;
+
+
+        if($vistos == false){
+            $array['visto'] = false;
+        } else{
+            $array['visto'] = $vistos->toArray();
+        }
 
         $elenco_service = $this->get('erika.elenco_prducao_tipo');
         $elenco = $elenco_service->getTipoElenco($prd);
@@ -67,5 +73,18 @@ class ApiController extends Controller
         }catch (Exception $e){
             return new JsonResponse(array('retorno' => 'false', 'mensagem' => $e->getMessage()));
         }
+    }
+
+    public function putVistoAction($id_movie, Request $request){
+        $parameters = $request->query->all();
+
+        if(empty($parameters['visto'])){
+            return new JsonResponse(array('retorno' => false, 'mensagem' => 'O Parametro VISTO é necessário'));
+        }
+
+        $service = $this->get('erika.watched');
+
+        $resposta = $service->atualizaWatched($id_movie, $parameters);
+        return new JsonResponse($resposta);
     }
 }
