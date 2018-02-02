@@ -23,4 +23,9 @@ erika_put_movie:
 erika_put_visto:
     path:   visto/{id_movie}
     defaults: { _controller: ErikaBundle:Api:PutVisto }
-    methods:  [PUT]
+    methods:  [POST]
+
+erika_put_wishlist:
+    path:     wishlist/{id_movie}
+    defaults: { _controller: ErikaBundle:Api:postWishlist }
+    methods:  [POST]

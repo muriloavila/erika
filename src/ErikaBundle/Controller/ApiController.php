@@ -38,12 +38,19 @@ class ApiController extends Controller
         $watchedService = $this->get('erika.watched');
         $vistos = $watchedService->getWatched($prd);
 
-
-
         if($vistos == false){
             $array['visto'] = false;
         } else{
-            $array['visto'] = $vistos->toArray();
+            $array['visto'] = $vistos[0]->toArray();
+        }
+
+        $wishlistService = $this->get('erika.wishlist');
+        $wishlist = $wishlistService->getWishlist($prd);
+
+        if($wishlist == false){
+            $array['wishlist'] = false;
+        } else {
+            $array['wishlist'] = $wishlist->toArray();
         }
 
         $elenco_service = $this->get('erika.elenco_prducao_tipo');
@@ -86,5 +93,19 @@ class ApiController extends Controller
 
         $resposta = $service->atualizaWatched($id_movie, $parameters);
         return new JsonResponse($resposta);
+    }
+
+    public function postWishlistAction($id_movie, Request $request)
+    {
+        $parameters = $request->query->all();
+
+        if(empty($parameters['wishlist'])){
+            return new JsonResponse(array('retorno' => false, 'mensagem' => ' O Parametro WISHLIST é necessário'));
+        }
+
+        $service = $this->get('erika.wishlist');
+
+
+        return new JsonResponse($parameters);
     }
 }

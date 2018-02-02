@@ -80,4 +80,11 @@ class Wishlist
     {
         return $this->prd;
     }
+
+    public function toArray(){
+        return array(
+            'id' => $this->id,
+            'prioridade' => $this->prioridade
+        );
+    }
 }
