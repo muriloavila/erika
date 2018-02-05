@@ -126,8 +126,45 @@ class EpisodioService
         return array('actorsSalvos' => $actorsSalvos, 'crewSalvos' => $crewSalvos);
     }
 
-    public function setEpisodeWatched($serie_id, $season, $episode, $parameters){
+    public function setEpisodeWatched($episode, $parameters){
 
+        $episodio = $this->entityManager->getRepository(Episodio::class)->findOneBy(array('id' => $episode));
 
+        if(empty($episodio)){
+            return null;
+        }
+
+        if($parameters['visto'] == "true"){
+            $episodio->setVisto(true);
+        }else{
+            $episodio->setVisto(false);
+        }
+
+        $this->entityManager->persist($episodio);
+        $this->entityManager->flush();
+
+        return array('retorno' => true, 'mensagem' => 'Operação Realizada com Sucesso!');
+    }
+
+    public function  setSeasonWatched($serie_id, $season, $parameters){
+       $episodios = $this->getSeason($serie_id, $season);
+
+       if(empty($episodios)){
+           return null;
+       }
+
+       $visto = false;
+       if($parameters['visto'] == "true"){
+           $visto = true;
+       }
+
+        foreach ($episodios as $episodio) {
+            $episodio->setVisto($visto);
+
+            $this->entityManager->persist($episodio);
+            $this->entityManager->flush();
+       }
+
+       return array('retorno' => true, 'mensagem' => 'Atualização feita com sucesso');
     }
 }

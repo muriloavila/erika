@@ -38,3 +38,14 @@ erika_get_serie:
 erika_get_serie_season:
     path:     serie/{id_serie}/season/{season}
     defaults: { _controller: ErikaBundle:Api:getSerieSeason }
+    methods:  [GET]
+
+erika_put_serie_episode_visto:
+    path:     visto/episode/{id_episode}
+    defaults: { _controller: ErikaBundle:Api:postEpisodeWatched }
+    methods:  [PUT]
+
+erika_put_serie_season_visto:
+    path:     visto/serie/{id_serie}/season/{season}
+    defaults: { _controller: ErikaBundle:Api:putSeasonVisto }
+    methods:  [PUT]

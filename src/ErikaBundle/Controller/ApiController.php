@@ -138,14 +138,32 @@ class ApiController extends Controller
         return new JsonResponse($array);
     }
 
-    public function postEpisodeWatched($serie_id, $season, $episode_id, Request $request){
+    public function postEpisodeWatchedAction($id_episode, Request $request){
         $parameters = $request->query->all();
 
         if(empty($parameters['visto'])){
             return new JsonResponse(array('retorno' => false, 'mensagem' => 'O Parametro VISTO é necessário'));
         }
 
+        if($parameters['visto'] != true && $parameters['visto'] != false){
+            return new JsonResponse(array('retorno' => false, 'mensagem' => 'O Parametro VISTO somente pode ser True ou False'));
+        }
+
         $service = $this->get('erika.episodio');
+        $retorno = $service->setEpisodeWatched($id_episode, $parameters);
+
+        return new JsonResponse($retorno);
+
+    }
+
+    public function putSeasonVistoAction($id_serie, $season, Request $request){
+        $service = $this->get('erika.episodio');
+
+        $parameters = $request->query->all();
+
+        $retorno = $service->setSeasonWatched($id_serie, $season, $parameters);
+
+        return new JsonResponse($retorno);
     }
 
     private function getProdutoras($prd){
