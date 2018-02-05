@@ -121,7 +121,7 @@ class ApiController extends Controller
         $array['produtoras'] = $this->getProdutoras($serie);
         $array['wishlist'] = $this->getWishlist($serie);
         $array['watched'] = $this->getWatched($serie);
-
+        $array['elenco'] = $this->getElenco($serie);
 
         return new JsonResponse($array);
     }
@@ -129,10 +129,23 @@ class ApiController extends Controller
     public function getSerieSeasonAction($id_serie, $season){
         $service = $this->get('erika.episodio');
         $episodios = $service->getSeason($id_serie, $season);
+        $array = array();
+        foreach ($episodios as $key => $episodio) {
+            $array[$key] = $episodio->toArray();
+            $array[$key]['elenco'] = $this->getElencoEpisodio($episodio);
+        }
 
-        dump($episodios);
+        return new JsonResponse($array);
+    }
 
-        return new JsonResponse(array('retorno' => $season));
+    public function postEpisodeWatched($serie_id, $season, $episode_id, Request $request){
+        $parameters = $request->query->all();
+
+        if(empty($parameters['visto'])){
+            return new JsonResponse(array('retorno' => false, 'mensagem' => 'O Parametro VISTO é necessário'));
+        }
+
+        $service = $this->get('erika.episodio');
     }
 
     private function getProdutoras($prd){
@@ -192,6 +205,27 @@ class ApiController extends Controller
                 $array['producao'][] = $elenco_um;
             }
         }
+
+        return $array;
     }
 
+    private function getElencoEpisodio($episodio){
+        $service = $this->get('erika.elenco_episodio_tipo');
+        $elenco = $service->getElenco($episodio);
+
+        $array = array();
+
+        foreach ($elenco as $elc) {
+            $elenco_um = $elc->getElc()->toArray();
+            if($elc->getTipoElc()->getId() == 3){
+                $elenco_um['nome_char'] = $elc->getNomeChar();
+                $array['atores'][] = $elenco_um;
+            } else {
+                $elenco_um['tipoPrd'] = $elc->getTipoElc()->getDescricao();
+                $array['producao'][] = $elenco_um;
+            }
+        }
+
+        return $array;
+    }
 }

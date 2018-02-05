@@ -214,4 +214,20 @@ class Episodio
     {
         $this->id_imdtb = $id_imdtb;
     }
+
+    public function toArray(){
+        return array(
+            'id' => $this->id,
+            'nome' =>$this->nome,
+            'temporada' => $this->temporada,
+            'epiNum' =>$this->epiNum,
+            'resumo' => $this->resumo,
+            'visto' => $this->visto,
+            'idTmdtb' => $this->id_imdtb,
+            'serie' => array(
+                'id' => $this->prd->getId(),
+                'nome'=> $this->prd->getTitulo()
+            )
+        );
+    }
 }

@@ -74,4 +74,19 @@ class ElencoEpisodioTipoService
 
         return $salvos;
     }
+
+    public function getElenco($episodio){
+        if(empty($episodio)){
+            return null;
+        }
+
+        $em = $this->entityManager;
+        $elencoTipo = $em->getRepository(ElencoEpisodioTipo::class)->findBy(array('epi' => $episodio));
+
+        if(empty($elencoTipo)){
+            return null;
+        }
+
+        return $elencoTipo;
+    }
 }

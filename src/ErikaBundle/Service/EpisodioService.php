@@ -125,4 +125,9 @@ class EpisodioService
 
         return array('actorsSalvos' => $actorsSalvos, 'crewSalvos' => $crewSalvos);
     }
+
+    public function setEpisodeWatched($serie_id, $season, $episode, $parameters){
+
+
+    }
 }
