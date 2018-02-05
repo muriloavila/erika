@@ -82,7 +82,7 @@ class ApiController extends Controller
         }
     }
 
-    public function putVistoAction($id_movie, Request $request){
+    public function putVistoAction($id_producao, Request $request){
         $parameters = $request->query->all();
 
         if(empty($parameters['visto'])){
@@ -91,11 +91,11 @@ class ApiController extends Controller
 
         $service = $this->get('erika.watched');
 
-        $resposta = $service->atualizaWatched($id_movie, $parameters);
+        $resposta = $service->atualizaWatched($id_producao, $parameters);
         return new JsonResponse($resposta);
     }
 
-    public function postWishlistAction($id_movie, Request $request)
+    public function postWishlistAction($id_producao, Request $request)
     {
         $parameters = $request->query->all();
 
@@ -103,9 +103,95 @@ class ApiController extends Controller
             return new JsonResponse(array('retorno' => false, 'mensagem' => ' O Parametro WISHLIST é necessário'));
         }
 
+        if(empty($parameters['prioridade'])){
+            return new JsonResponse(array('retorno' => false, 'mensagem' => ' O Parametro PRIORIDADE é necessário'));
+        }
+
         $service = $this->get('erika.wishlist');
 
-
-        return new JsonResponse($parameters);
+        $resposta = $service->postWishlist($id_producao, $parameters);
+        return new JsonResponse($resposta);
     }
+
+    public function getSerieAction($id_serie){
+        $service = $this->get('erika.producao');
+        $serie = $service->getSerie($id_serie);
+
+        $array = $serie->toArray();
+        $array['produtoras'] = $this->getProdutoras($serie);
+        $array['wishlist'] = $this->getWishlist($serie);
+        $array['watched'] = $this->getWatched($serie);
+
+
+        return new JsonResponse($array);
+    }
+
+    public function getSerieSeasonAction($id_serie, $season){
+        $service = $this->get('erika.episodio');
+        $episodios = $service->getSeason($id_serie, $season);
+
+        dump($episodios);
+
+        return new JsonResponse(array('retorno' => $season));
+    }
+
+    private function getProdutoras($prd){
+        $produtoras_service = $this->get('erika.produtora_producao');
+        $produtoras = $produtoras_service->getProdutoras($prd);
+
+        $array = array();
+        foreach ($produtoras as $produtora) {
+            $array[] = $produtora->getPdt()->toArray();
+        }
+
+        return $array;
+    }
+
+    private function getWishlist($prd){
+        $wishlistService = $this->get('erika.wishlist');
+        $wishlist = $wishlistService->getWishlist($prd);
+
+        $array = array();
+
+        if($wishlist == false){
+            $array = false;
+        } else {
+            $array = $wishlist->toArray();
+        }
+
+        return $array;
+    }
+
+    private function getWatched($prd){
+        $watchedService = $this->get('erika.watched');
+        $vistos = $watchedService->getWatched($prd);
+
+        if($vistos == false){
+            $array = false;
+        } else{
+            $array = $vistos[0]->toArray();
+        }
+
+        return $array;
+    }
+
+    private function getElenco($prd){
+        $elenco_service = $this->get('erika.elenco_prducao_tipo');
+        $elenco = $elenco_service->getTipoElenco($prd);
+
+        $array = array();
+
+        foreach ($elenco as $elc) {
+            $elenco_um = $elc->getElc()->toArray();
+
+            if($elc->getTipoElc()->getId() == 3){
+                $elenco_um['nome_char'] = $elc->getNomeChar();
+                $array['atores'][] = $elenco_um;
+            } else {
+                $elenco_um['tipoPrd'] = $elc->getTipoElc()->getDescricao();
+                $array['producao'][] = $elenco_um;
+            }
+        }
+    }
+
 }

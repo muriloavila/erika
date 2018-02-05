@@ -21,6 +21,23 @@ class EpisodioService
         $this->container = $container;
     }
 
+    public function getSeason($producao_id, $season){
+        if(empty($producao_id)){
+            return null;
+        }
+
+        if(empty($season)){
+            return null;
+        }
+
+        $em = $this->entityManager;
+
+        $producao = $em->getRepository(Producao::class)->findOneBy(array('id' => $producao_id));
+        $episodios = $em->getRepository(Episodio::class)->findBy(array('prd' => $producao, 'temporada' => $season));
+
+        return $episodios;
+    }
+
     public function saveSeason($serie_id, $season){
         if(empty($season)){
             return;

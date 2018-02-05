@@ -20,12 +20,21 @@ erika_put_movie:
     defaults: { _controller: ErikaBundle:Api:PutMovie }
     methods:  [PUT]
 
-erika_put_visto:
-    path:   visto/{id_movie}
+erika_post_visto:
+    path:   visto/{id_producao}
     defaults: { _controller: ErikaBundle:Api:PutVisto }
     methods:  [POST]
 
-erika_put_wishlist:
-    path:     wishlist/{id_movie}
+erika_post_wishlist:
+    path:     wishlist/{id_producao}
     defaults: { _controller: ErikaBundle:Api:postWishlist }
     methods:  [POST]
+
+erika_get_serie:
+    path:     serie/{id_serie}
+    defaults: { _controller: ErikaBundle:Api:getSerie }
+    methods:  [GET]
+
+erika_get_serie_season:
+    path:     serie/{id_serie}/season/{season}
+    defaults: { _controller: ErikaBundle:Api:getSerieSeason }

@@ -36,6 +36,18 @@
             return $producao;
         }
 
+        public function getSerie($id){
+            $em = $this->entityManager;
+            $tipoProducao = $em->getRepository(TipoProducao::class)->findBy(array('id' => 2));
+            $producao = $em->getRepository(Producao::class)->findOneBy(array('id' => $id, 'tipoPrd' => $tipoProducao));
+
+            if(empty($producao)){
+                return null;
+            }
+
+            return $producao;
+        }
+
         public function setMovie($id_movie, $parameters){
             $filme = $this->getMovie($id_movie);
 
