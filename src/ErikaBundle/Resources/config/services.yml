@@ -37,3 +37,6 @@ services:
    erika.wishlist:
        class: ErikaBundle\Service\WishlistService
        arguments: ['@doctrine.orm.entity_manager', "@service_container"]
+   erika.search:
+      class:  ErikaBundle\Service\SearchService
+      arguments: ['@doctrine.orm.entity_manager', "@service_container"]

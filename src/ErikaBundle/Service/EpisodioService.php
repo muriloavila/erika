@@ -84,13 +84,16 @@ class EpisodioService
                 $serie = $producaoService->setNewSerie($serie_id);
             }
 
-            $episodio_serie = new Episodio();
-            $episodio_serie->setEpiNum($episode->episode_number);
-            $episodio_serie->setTemporada($episode->season_number);
-            $episodio_serie->setNome($episode->name);
-            $episodio_serie->setResumo($episode->overview);
-            $episodio_serie->setPrd($serie);
-            $episodio_serie->setIdImdtb($serie_id);
+            if(empty($episodio_serie) && $episodio_serie == ""){
+                $episodio_serie = new Episodio();
+                $episodio_serie->setEpiNum($episode->episode_number);
+                $episodio_serie->setTemporada($episode->season_number);
+                $episodio_serie->setNome($episode->name);
+                $episodio_serie->setResumo($episode->overview);
+                $episodio_serie->setPrd($serie);
+                $episodio_serie->setIdImdtb($serie_id);
+            }
+
 
             $em->persist($episodio_serie);
             $em->flush();
@@ -107,18 +110,22 @@ class EpisodioService
 
         $count = 0;
         foreach ($credits->cast as $actor) {
-            $actorsSalvos[] = $elencoService->newElencoActor($actor);
-            if($count == 5){
-                break;
+            if(!empty($actor)){
+                $actorsSalvos[] = $elencoService->newElencoActor($actor);
+                if($count == 5){
+                    break;
+                }
             }
             $count++;
         }
 
         $count = 0;
         foreach ($credits->crew as $crew) {
-            $crewSalvos[] = $elencoService->newElencoCrew($crew);
-            if($count == 5){
-                break;
+            if(!empty($crew)){
+                $crewSalvos[] = $elencoService->newElencoCrew($crew);
+                if($count == 5){
+                    break;
+                }
             }
             $count++;
         }

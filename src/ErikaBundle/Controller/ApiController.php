@@ -4,7 +4,6 @@ namespace ErikaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
@@ -245,5 +244,20 @@ class ApiController extends Controller
         }
 
         return $array;
+    }
+
+
+    public function SearchAction(Request $request){
+        $parameters = $request->query->all();
+
+        $parameters = array_map('urldecode', $parameters);
+
+        if(empty($parameters)){
+            return new JsonResponse(array('retorno' => false, 'mensagem' => 'Um parametro de busca é necessário'));
+        }
+
+        $service = $this->get('erika.search');
+        $retorno = $service->search($parameters);
+        return new JsonResponse($retorno);
     }
 }

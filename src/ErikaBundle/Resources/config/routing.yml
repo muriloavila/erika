@@ -49,3 +49,8 @@ erika_put_serie_season_visto:
     path:     visto/serie/{id_serie}/season/{season}
     defaults: { _controller: ErikaBundle:Api:putSeasonVisto }
     methods:  [PUT]
+
+erika_get_search:
+    path:     /search
+    defaults: { _controller: ErikaBundle:Api:Search }
+    methods:  [GET]

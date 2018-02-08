@@ -23,9 +23,11 @@ class TipoElencoService
         $em = $this->entityManager;
         $salvos = array();
         foreach ($elenco as $el) {
-            
-            $el_prd_mv = $em->getRepository(TipoElenco::class)->findOneBy(array('descricao' => $el['department']));
 
+            if(empty($el['department'])){
+                $el['department'] = "Crew";
+            }
+            $el_prd_mv = $em->getRepository(TipoElenco::class)->findOneBy(array('descricao' => $el['department']));
             if(empty($el_prd_mv) || $el_prd_mv == null){
                 $el_prd_mv = new TipoElenco();
                 $el_prd_mv->setDescricao($el['department']);

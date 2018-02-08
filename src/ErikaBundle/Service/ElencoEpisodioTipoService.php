@@ -50,26 +50,39 @@ class ElencoEpisodioTipoService
     public function saveCrew(array $crews, $episodio){
         $salvos = array();
 
+        if(empty($episodio)){
+            return $salvos;
+        }
+
         $em = $this->entityManager;
 
         foreach ($crews as $crew) {
-            $department = $em->getRepository(TipoElenco::class)->findOneBy(array('descricao' => $crew['department']));
-            $crew_department = $em->getRepository(ElencoEpisodioTipo::class)->findOneBy(array(
-                'epi' => $episodio,
-                'tipoElc' => $department,
-                'elc' => $crew['obj']
-            ));
-            if(empty($crew_department) || $crew_department == null){
-                $crew_department = new ElencoEpisodioTipo();
-                $crew_department->setEpi($episodio);
-                $crew_department->setElc($crew['obj']);
-                $crew_department->setTipoElc($department);
+            if(!empty($crew['obj'])){
+                if(empty($crew['department'])){
+                    $crew['department'] = "Crew";
+                }
+                $department = $em->getRepository(TipoElenco::class)->findOneBy(array('descricao' => $crew['department']));
 
-                $em->persist($crew_department);
-                $em->flush();
+                if(empty($department)){
+                    $department = $em->getRepository(TipoElenco::class)->findOneBy(array('id' => 23));
+                }
+                $crew_department = $em->getRepository(ElencoEpisodioTipo::class)->findOneBy(array(
+                    'epi' => $episodio,
+                    'tipoElc' => $department,
+                    'elc' => $crew['obj']
+                ));
+                if(empty($crew_department) || $crew_department == null){
+                    $crew_department = new ElencoEpisodioTipo();
+                    $crew_department->setEpi($episodio);
+                    $crew_department->setElc($crew['obj']);
+                    $crew_department->setTipoElc($department);
+
+                    $em->persist($crew_department);
+                    $em->flush();
+                }
+
+                $salvos[] = $crew_department;
             }
-
-            $salvos[] = $crew_department;
         }
 
         return $salvos;

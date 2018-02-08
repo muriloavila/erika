@@ -51,6 +51,7 @@ function findSeasons() {
         data: {'serie_id' : $("#seasons").attr('season_id')},
         async: true,
         success: function(data){
+            $('#temporadas').empty();
             if(data.temporadas > 0){
                 for(var i = 0; i <= data.temporadas; i++){
                     $('#temporadas').append($('<option>', {
